@@ -1,129 +1,115 @@
 import React, { useState } from 'react';
-import loginData from '../test/loginData.json'
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import loginData from '../test/loginData.json';
 
-const LoginMenu = ({ onClose }) => {
+const LoginMenu = ({ show, onHide }) => {
+  const [formData, setFormData] = useState({
+    loginEmail: '',
+    loginPassword: '',
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
-    const [formData, setFormData] = useState({
+  const handleHide = () => {
+    setFormData({
         loginEmail: '',
-        loginPassword: ''
+        loginPassword: '',
     });
-    const [isSuccess, setIsSuccess] = useState(false)
+    setErrors({
+        regEmail: '',
+        regPassword: '',
+        regConfirmPassword: '',
+    });
+    onHide();
+};
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const [errors, setErrors] = useState({});
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
+    // Check for errors
+    const emailRegex = /\S+@\S+\.\S+/;
+    let errors = {};
+    if (!formData.loginEmail) {
+      errors.loginEmail = 'Email is required';
+    } else if (!emailRegex.test(formData.loginEmail)) {
+      errors.loginEmail = 'Invalid email format';
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    if (!formData.loginPassword) {
+      errors.loginPassword = 'Password is required';
+    }
 
-        // Check for errors
-        const emailRegex = /\S+@\S+\.\S+/;
-        let errors = {};
-        if (!formData.loginEmail) {
-            errors.loginEmail = "Email is required";
-        } else if (!emailRegex.test(formData.loginEmail)) {
-            errors.loginEmail = "Invalid email format";
-        }
+    setErrors(errors);
 
-        if (!formData.loginPassword) {
-            errors.loginPassword = "Password is required";
-        }
+    // If there are no errors, submit the form
+    if (Object.keys(errors).length === 0) {
+      // Send form data to server for processing
+      console.log(formData);
+      // Close the window
+      setIsSuccess(true);
+      onHide();
+    }
+  };
 
-        setErrors(errors);
+  const onClickHandler = (event) => {
+    event.preventDefault();
+    let success = false;
+    loginData.users.forEach((login) => {
+      if (login.email === formData.loginEmail && login.password === formData.loginPassword) {
+        success = true;
+      }
+    });
 
-        // If there are no errors, submit the form
-        if (Object.keys(errors).length === 0) {
-            // Send form data to server for processing
-            console.log(formData);
-            // Close the window
-            onClose();
-        }
-    };
+    console.log(success);
 
-    const onClickHandler = (event) => {
-        event.preventDefault();
-        let success = false;
-        loginData.users.forEach((login) => {
-            if (login.email === formData.loginEmail && login.password === formData.loginPassword) {
-                success = true;
-            }
-        });
+    if (success) {
+      setIsSuccess(true);
+    } else {
+      setErrors({ login: 'Invalid username or password' });
+    }
+    console.log(errors);
+  };
 
-        console.log(success);
-    
-        if (success) {
-            setIsSuccess(true);
-        } else {
-            setErrors({ login: "Invalid username or password" });
-        }
-        console.log(errors);
-    };
-    
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    //ID for each var:
-    //Email: "loginEmail"
-    //Pwd:  "loginPassword"
-
-    return (
-        <div className="window-overlay" onClick={handleOverlayClick}>
-            <div className="window-container">
-                <div className="window border rounded shadow">
-                    <div className="window-header">
-                        <span className="window-title">User Login</span>
-                        <button className="window-close" onClick={onClose}>
-                            &times;
-                        </button>
-                    </div>
-                    {errors.login ? <div className="invalid-feedback">{errors.login}</div> : null}
-                    <div className="window-content">
-                        <form onSubmit={handleSubmit}>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="regEmail">Email</label>
-                                <input
-                                    type="email"
-                                    name="loginEmail"
-                                    id="loginEmail"
-                                    className="form-control"
-                                    value={formData.loginEmail}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="loginPassword"
-                                    id="loginPassword"
-                                    className="form-control"
-                                    value={formData.loginPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-
-                            </div>
-                            <button
-                                type="submit"
-                                id="loginButton"
-                                className="btn btn-primary btn-block mb-4"
-                                onClick={onClickHandler}
-                            >Sign In</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    );
+  return (
+    <Modal show={show} onHide={handleHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>User Login</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {errors.login ? <Alert variant="danger">{errors.login}</Alert> : null}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="loginEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="loginEmail"
+              value={formData.loginEmail}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="loginPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="loginPassword"
+              value={formData.loginPassword}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" className="btn-block" onClick={onClickHandler}>
+            Sign In
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 };
 
 export default LoginMenu;

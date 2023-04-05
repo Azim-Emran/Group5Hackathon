@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Modal, Form, Button } from 'react-bootstrap';
 
-const RegisterMenu = ({ onClose }) => {
+const RegisterMenu = ({ show, onHide }) => {
 
-    //Email and password for registration
+    // Email and password for registration
     const [formData, setFormData] = useState({
         regEmail: '',
         regPassword: '',
@@ -15,13 +16,6 @@ const RegisterMenu = ({ onClose }) => {
         regPassword: '',
         regConfirmPassword: '',
     });
-
-
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -40,12 +34,6 @@ const RegisterMenu = ({ onClose }) => {
             hasError = true;
         }
 
-        //If you want password length validation, disable the comment for below
-        // if (!formData.regPassword || formData.regPassword.length < 8) {
-        //     newErrors.regPassword = 'Please enter a password with at least 8 characters';
-        //     hasError = true;
-        // }
-
         if (formData.regPassword !== formData.regConfirmPassword) {
             newErrors.regConfirmPassword = 'Passwords do not match';
             hasError = true;
@@ -57,21 +45,32 @@ const RegisterMenu = ({ onClose }) => {
             // Send form data to server for processing
             console.log(formData);
             // Close the window
-            onClose();
+            onHide();
         }
     };
 
-    //Handler for input changes
+    // Handler for input changes
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const [isChecked, setIsChecked] = useState(false);
 
-    const handleCheckboxChange = (event) => {
-        setIsChecked(event.target.checked);
+    // Reset the form data and errors when the modal is closed
+    const handleHide = () => {
+        setFormData({
+            regEmail: '',
+            regPassword: '',
+            regConfirmPassword: '',
+        });
+        setErrors({
+            regEmail: '',
+            regPassword: '',
+            regConfirmPassword: '',
+        });
+        onHide();
     };
+
 
     //ID for each var:
     //Email: "regEmail"
@@ -79,94 +78,65 @@ const RegisterMenu = ({ onClose }) => {
     //Checkbox: "regCheckBox"
 
     return (
-        <div className="window-overlay" onClick={handleOverlayClick}>
-            <div className="window-container">
-                <div className="window border rounded shadow">
-                    <div className="window-header">
-                        <span className="window-title">User Registration</span>
-                        <button className="window-close" onClick={onClose}>
-                            &times;
-                        </button>
-                    </div>
-                    <div className="window-content">
-                        <form onSubmit={handleSubmit}>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="regEmail">Email</label>
-                                <input
-                                    type="email"
-                                    name="regEmail"
-                                    id="regEmail"
-                                    className={`form-control ${errors.regEmail ? 'is-invalid' : ''}`}
-                                    value={formData.regEmail}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                                {errors.regEmail ? 
-                                <div className="invalid-feedback">
-                                    {errors.regEmail}</div>
-                                    : null}
-                            </div>
+        <Modal show={show} onHide={handleHide}>
+            <Modal.Header closeButton={true}>
+                <Modal.Title>User Registration</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="regEmail" className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            name="regEmail"
+                            value={formData.regEmail}
+                            onChange={handleInputChange}
+                            required
+                            isInvalid={!!errors.regEmail}
+                        />
+                        <Form.Control.Feedback type="invalid" className="mb-3">
+                            {errors.regEmail}
+                        </Form.Control.Feedback>
+                    </Form.Group>
 
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="regPassword"
-                                    id="regPassword"
-                                    className={`form-control ${errors.regPassword ? 'is-invalid' : ''}`}
-                                    value={formData.regPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                                {/* {errors.regPassword 
-                                && 
-                                <div class="invalid-feedback">
-                                    {errors.regPassword}
-                                    </div>} */}
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="password">Confirm Password</label>
-                                <input
-                                    type="password"
-                                    name="regConfirmPassword"
-                                    id="regConfirmPassword"
-                                    className={`form-control ${errors.regConfirmPassword ? 'is-invalid' : ''}`}
-                                    value={formData.regConfirmPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                                {errors.regConfirmPassword 
-                                ? 
-                                <div className="invalid-feedback">
-                                    {errors.regConfirmPassword}
-                                    </div> : null}
-                            </div>
-                            <div className="mb-4">
-                                <div className="col d-flex">
-                                    <div className="form-check">
-                                        <input
-                                            className="form-check-input"
-                                            onChange={handleCheckboxChange}
-                                            type="checkbox"
-                                            value=""
-                                            id="regCheckBox"
-                                            checked={isChecked} />
-                                        <label className="form-check-label" htmlFor="regCheckBox">I am a freelancer</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button
-                                type="submit"
-                                id="regButton"
-                                className={`btn btn-primary btn-block mb-4"`}
-                            >Sign Up</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <Form.Group controlId="regPassword" className="mb-3">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="regPassword"
+                            value={formData.regPassword}
+                            onChange={handleInputChange}
+                            required
+                            isInvalid={!!errors.regPassword}
+                        />
+                        <Form.Control.Feedback type="invalid" className="mb-3">
+                            {errors.regPassword}
+                        </Form.Control.Feedback>
+                    </Form.Group>
 
+                    <Form.Group controlId="regConfirmPassword" className="mb-3">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="regConfirmPassword"
+                            value={formData.regConfirmPassword}
+                            onChange={handleInputChange}
+                            required
+                            isInvalid={!!errors.regConfirmPassword}
+                        />
+                        <Form.Control.Feedback type="invalid" className="mb-3">
+                            {errors.regConfirmPassword}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit" className='btn-block'>
+                        Sign Up
+                    </Button>
+                </Form>
+            </Modal.Body>
+        </Modal>
     );
+
 };
 
 export default RegisterMenu;
