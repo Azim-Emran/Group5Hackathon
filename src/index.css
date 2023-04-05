@@ -1,12 +1,11 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #EAEAEC
 }
 
 code {
@@ -31,85 +30,32 @@ code {
 /*For color references */
 
 .text-color {
-  color: 'FFFFFF'
+  color: #FFFFFF
 }
 
 .background-color{
-  background-color: 'EAEAEC'
+  background-color: #EAEAEC
 }
 
 .main-color{
-  background-color: 'F88812';
+  background-color: #F88812
 }
 
 .third-color{
-  background-color: '0C151D'
+  background-color: #0C151D
+}
+
+.accent-color{
+  background-color: #C285FF
 }
 
 /*You may take the colors and 
 apply to background or text color when needed */
 
 
-/* ========== SMALL WINDOW STARTS ========= */
+/* ========== NAVBAR STARTS ========= */
+/* ========== NAVBAR ENDS ========= */
 
-.window-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-
-.window {
-  width: 400px;
-  background-color: white;
-  padding: 10px;
-}
-
-.window-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid #ccc;
-}
-
-.window-title {
-  font-size: 1.5rem;
-}
-
-.window-close {
-  font-size: 1.5rem;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.window-close:hover {
-  color: red;
-}
-
-.window-content {
-  padding: 1rem;
-}
-
-.window-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;  
-}
-
-/* ========== SMALL WINDOW ENDS ========= */
-
-
-
-/* ========== HOMEPAGE CONTAINER STARTS ========= */
 
 .homepage-container{
   height:500px;
@@ -124,7 +70,25 @@ apply to background or text color when needed */
 
 
 
+
+
 /* ========== HOMEPAGE CONTAINER ENDS ========= */
+
+
+/* ========== PROFILE PAGE STARTS ========= */
+
+.card-container{
+  width:100%;
+  border-top: 6px solid #F88812;
+  margin-top:30px;
+}
+
+.profile-image{
+  width:100%;
+}
+
+
+/* ========== PROFILE PAGE ENDS ========= */
 
 
 @media only screen and (min-width: 600px) {
