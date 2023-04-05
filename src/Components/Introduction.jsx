@@ -1,13 +1,16 @@
-const Introduction = () =>{
+const Introduction = () => {
 
     return (
-        <div className="wrapper homepage-container container-test row">
-            <div className="col-6">
-                
+        <div className="homepage-container container-test">
+            <div className="wrapper row">
+                <div className="col-6">
+                    SS
+                </div>
+                <div className="col-6">
+                    Lista
+                </div>
             </div>
-            <div className="col-6">
-                Lista
-            </div>
+
         </div>
     )
 

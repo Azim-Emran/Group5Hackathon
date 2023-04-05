@@ -114,6 +114,7 @@ apply to background or text color when needed */
 .homepage-container{
   height:500px;
   max-height:500px;
+  width:100%;
 }
 
 .container-test{
