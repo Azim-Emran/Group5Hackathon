@@ -113,6 +113,7 @@ apply to background or text color when needed */
 
 .homepage-container{
   height:600px;
+  max-height:600px;
 }
 
 .container-test{
