@@ -112,8 +112,8 @@ apply to background or text color when needed */
 /* ========== HOMEPAGE CONTAINER STARTS ========= */
 
 .homepage-container{
-  height:600px;
-  max-height:600px;
+  height:500px;
+  max-height:500px;
 }
 
 .container-test{
