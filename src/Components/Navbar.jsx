@@ -53,7 +53,7 @@ const Navbar = () => {
                             <Link className="nav-link disabled">Disabled</Link>
                         </li>
                     </ul>
-                    {!isUser && (
+                    {isUser && (
                         <>
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleLoginWindow}>Login</button>
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleRegWindow}>Sign Up</button>
