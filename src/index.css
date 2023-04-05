@@ -28,6 +28,27 @@ code {
   padding-right: 5px;
 }
 
+/*For color references */
+
+.text-color {
+  color: 'FFFFFF'
+}
+
+.background-color{
+  background-color: 'EAEAEC'
+}
+
+.main-color{
+  background-color: 'F88812';
+}
+
+.third-color{
+  background-color: '0C151D'
+}
+
+/*You may take the colors and 
+apply to background or text color when needed */
+
 
 /* ========== SMALL WINDOW STARTS ========= */
 
@@ -89,6 +110,15 @@ code {
 
 
 /* ========== HOMEPAGE CONTAINER STARTS ========= */
+
+.homepage-container{
+  height:600px;
+}
+
+.container-test{
+  background-color: blue; /*This is for testing empty div size */
+  /*Don't use this class/remove this class once you done testing */
+}
 
 
 
