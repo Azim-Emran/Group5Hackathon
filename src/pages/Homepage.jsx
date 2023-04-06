@@ -1,6 +1,6 @@
-
 import Introduction from "../Components/Introduction"
 import Navbar from "../Components/Navbar"
+
 
 const Homepage = () => {
     return (
