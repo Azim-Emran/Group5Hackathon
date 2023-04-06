@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import RegisterMenu from "./RegisterMenu";
 import LoginMenu from "./LoginMenu";
+import Logo from "../images/logo.png";
+import StyleLogo from "../Components/smallComponents/Logo.css";
 import { useContext, useEffect, useState, } from "react";
-import logo from "../images/logo.png"
 import { Image } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 
@@ -15,27 +16,28 @@ const Navbar = () => {
     const [showRegWindow, setShowRegWindow] = useState(false);
     const { userId, setUserId } = useContext(AuthContext);
 
-    //Handlers to open and close login window
-    const handleToggleLoginWindow = () => {
-        setShowLoginWindow(!showLoginWindow)
-    }
 
+  //Handlers to open and close login window
+  const handleToggleLoginWindow = () => {
+    setShowLoginWindow(!showLoginWindow);
+  };
 
-    //Handlers to open and close registration window
-    const handleToggleRegWindow = () => {
-        setShowRegWindow(!showRegWindow)
-    }
-
+  //Handlers to open and close registration window
+  const handleToggleRegWindow = () => {
+    setShowRegWindow(!showRegWindow);
+  };
+  
+  
     const handleLogout = () => {
         setUserId('');
         navigate('/');
         
     }
 
-
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark accent-color wrapper">
+            <img src={Logo} alt="" className="logo" />
                 <Image src={logo} className="navbar-logo" />
                 <Link className="navbar-brand" to="/">Home</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
