@@ -54,6 +54,13 @@ apply to background or text color when needed */
 
 
 /* ========== NAVBAR STARTS ========= */
+
+.navbar-logo{
+  height: 40px;
+  margin-right: 10px;
+  margin-left: -10px;
+}
+
 /* ========== NAVBAR ENDS ========= */
 
 
@@ -109,6 +116,11 @@ apply to background or text color when needed */
 
 
 /* ========== PROFILE PAGE ENDS ========= */
+
+
+
+/* ========== EXPLORE PAGE STARTS ========= */
+/* ========== EXPLORE PAGE ENDS ========= */
 
 
 @media only screen and (min-width: 600px) {

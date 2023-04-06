@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { Card } from "react-bootstrap"
 import EditTooltip from "../smallComponents/EditTooltip"
-import { BsBehance, BsFacebook, BsInstagram, BsLinkedin, BsTelephone, BsTwitter } from "react-icons/bs"
+import { BsBehance, BsBriefcase, BsFacebook, BsInstagram, BsLinkedin, BsTelephone, BsTwitter } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 const Sidebar = () => {
 
     const [isUser, setIsUser] = useState(true)
 
-    const [portfolio,setPortfolio] = useState("Lorem ipsum dolor sit amet, consectetur adip")
+    const [portfolio,setPortfolio] = useState("example.com/hilda-machilda-portfolio")
     
     const [contact,setContact] = useState("+6732233421")
 
@@ -63,19 +63,6 @@ const Sidebar = () => {
         <Card className="card-container shadow-sm ">
             <Card.Body>
 
-
-                <div className="d-flex justify-content-between align-items-center">
-                    <Card.Title
-                        className="font-weight-bold">
-                        About Me
-                    </Card.Title>
-                    {isUser && <EditTooltip />} {/*Pencil for edit button */}
-                </div>
-                <Card.Text>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae dolores nostrum officiis quisquam illum inventore odit reiciendis quam consequuntur dolore?
-                </Card.Text>
-                <hr />
-
                 <div className="d-flex justify-content-between align-items-center">
                     <Card.Title
                         className="font-weight-bold">
@@ -101,7 +88,7 @@ const Sidebar = () => {
                     {isUser && <EditTooltip />}
                 </div>
                 <Card.Text>
-                   {portfolio}
+                   <BsBriefcase/> <a href={portfolio} className="text-decoration-none">{portfolio}</a>
 
                 </Card.Text>
                 <hr />
