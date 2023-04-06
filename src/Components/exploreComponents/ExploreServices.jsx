@@ -6,6 +6,10 @@ const ExploreServices = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [services, setServices] = useState([]);
 
+  useEffect(() => {
+    fetchServices();
+  }, [selectedCategory]);
+
   const fetchServices = async () => {
     let sql;
 
@@ -24,41 +28,37 @@ const ExploreServices = () => {
     setServices(data.data);
   };
 
-  useEffect(() => {
-    fetchServices();
-  }, [selectedCategory]);
-
   return (
     <>
       <div class="wrapper">
         <div>
           <Button
-            class="btn btn-outline-primary mr-3"
+            class="btn btn-outline-primary"
             onClick={() => setSelectedCategory("All")}
           >
             All
           </Button>
           <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("graphicdesign")}
+            class="btn btn-outline-primary"
+            onClick={() => setSelectedCategory("Graphic Design")}
           >
             Graphic Design
           </Button>
           <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("photovideo")}
+            class="btn btn-outline-primary"
+            onClick={() => setSelectedCategory("Photography & Videography")}
           >
             Photography & Videography
           </Button>
           <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("writetrans")}
+            class="btn btn-outline-primary"
+            onClick={() => setSelectedCategory("Writing & Translation")}
           >
             Writing & Translation
           </Button>
           <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("programtech")}
+            class="btn btn-outline-primary"
+            onClick={() => setSelectedCategory("Programming & Tech")}
           >
             Programming & Tech
           </Button>
@@ -88,3 +88,4 @@ const ExploreServices = () => {
 };
 
 export default ExploreServices;
+
