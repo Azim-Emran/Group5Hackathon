@@ -1,14 +1,24 @@
 import { useState } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
+import axios from "axios";
+import Endpoints from "../../api/endpoint";
 
 const ServiceRegistration = ({ show, onHide }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     //For dropdown
+
+    const categoryList = [
+        "Graphic Design",
+        "Photography & Videography",
+        "Writing & Translation",
+        "Programming & Tech",
+    ]
     const [formData, setFormData] = useState({
         serviceName: '',
         serviceDescription: '',
         servicePrice: '',
         serviceCategory: '',
+        servicePhoto: '',
     });
 
     const [errors, setErrors] = useState({});
@@ -23,11 +33,35 @@ const ServiceRegistration = ({ show, onHide }) => {
         setFormData({ ...formData, serviceCategory: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const errors = validate(formData);
+        switch (formData.serviceCategory) {
+            case categoryList[0]:
+                setFormData({ ...formData, servicePhoto: "../../images/graphic-design.jpg" })
+                break;
+            case categoryList[1]:
+                setFormData({ ...formData, servicePhoto: "../../images/photography-videography.jpg" })
+                break;
+            case categoryList[2]:
+                setFormData({ ...formData, servicePhoto: "../../images/writing-translation.jpg" })
+                break;
+            case categoryList[3]:
+                setFormData({ ...formData, servicePhoto: "../../images/programming-tech.jpg" })
+                break;
+            default:
+                setFormData({ ...formData, servicePhoto: "" })
+        }
         if (Object.keys(errors).length === 0) {
-            // Submit form data to server
+            // try {
+            //     await axios.post(Endpoints.POST, formData);
+            //     // handle success (e.g. show a success message)
+            //     console.log('Service added successfully');
+            // } catch (error) {
+            //     // handle error (e.g. show an error message)
+            //     console.log('Error adding service', error);
+            // }
+            //User cred_ID not yet prepared, so can't test this.
         } else {
             setErrors(errors);
         }
@@ -105,10 +139,10 @@ const ServiceRegistration = ({ show, onHide }) => {
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange} required>
                                     <option value="" selected disabled></option>
-                                    <option value="Graphic Designer">Graphic Designer</option>
-                                    <option value="Photography & Videography">Photography & Videography</option>
-                                    <option value="Writing & Translation">Writing & Translation</option>
-                                    <option value="Programming & Tech">Programming & Tech</option>
+                                    <option value={categoryList[0]}>Graphic Design</option>
+                                    <option value={categoryList[1]}>Photography & Videography</option>
+                                    <option value={categoryList[2]}>Writing & Translation</option>
+                                    <option value={categoryList[3]}>Programming & Tech</option>
                                 </Form.Control>
                             </Form.Group>
 

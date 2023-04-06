@@ -54,6 +54,13 @@ apply to background or text color when needed */
 
 
 /* ========== NAVBAR STARTS ========= */
+
+.navbar-logo{
+  height: 40px;
+  margin-right: 10px;
+  margin-left: -10px;
+}
+
 /* ========== NAVBAR ENDS ========= */
 
 

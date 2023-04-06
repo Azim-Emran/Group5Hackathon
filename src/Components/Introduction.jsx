@@ -1,5 +1,4 @@
 import { Image } from "react-bootstrap"
-import image1 from "../images/logo.png"
 
 const Introduction = () => {
 
@@ -7,7 +6,6 @@ const Introduction = () => {
         <div className="homepage-container">
             <div className="wrapper row">
                 <div className="col-6">
-                    <Image src={image1}/>
                 </div>
                 <div className="col-6">
                     Your all-in-one freelance platform

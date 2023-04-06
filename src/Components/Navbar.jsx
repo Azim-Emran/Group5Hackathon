@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import RegisterMenu from "./RegisterMenu";
 import LoginMenu from "./LoginMenu";
 import { useState, } from "react";
+import logo from "../images/logo.png"
+import { Image } from "react-bootstrap";
 
 const Navbar = () => {
     //State variables
@@ -20,11 +22,15 @@ const Navbar = () => {
         setShowRegWindow(!showRegWindow)
     }
 
+    const handleLogout = () =>{
+        setIsUser(false);
+    }
+
 
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark accent-color wrapper">
-
+                <Image src={logo} className="navbar-logo"/>
                 <Link className="navbar-brand" to="/">Home</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -41,6 +47,9 @@ const Navbar = () => {
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleLoginWindow}>Login</button>
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleRegWindow}>Sign Up</button>
                         </>
+                    )}
+                    {isUser && (
+                        <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button>
                     )}
                 </div>
             </nav>
