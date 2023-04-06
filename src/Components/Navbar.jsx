@@ -44,6 +44,11 @@ const Navbar = () => {
                             {userId && <Link className="nav-link" to="/profile/:userId">Profile <span className="sr-only">(current)</span></Link>}
                         </li>
                     </ul>
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/services">Explore </Link>
+                        </li>
+                    </ul>
                     {userId ? (
                         <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button>
                     ) : (
