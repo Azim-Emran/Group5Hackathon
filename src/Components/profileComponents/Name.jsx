@@ -1,5 +1,5 @@
 import { Card, Image } from "react-bootstrap"
-import { BsGear } from "react-icons/bs"
+import { BsGear, BsEnvelopeAt } from "react-icons/bs"
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
 import { useState } from "react";
 
@@ -28,6 +28,9 @@ const Name = () => {
                 <Card.Title >Firstname Lastname</Card.Title>
                 <Card.Text className="font-weight-light">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi maxime quo accusamus eum obcaecati perferendis dolor, eaque nesciunt aperiam iusto!
+                </Card.Text>
+                <Card.Text>
+                    <BsEnvelopeAt/>  MyEmail@email.com
                 </Card.Text>
 
                 </div>
