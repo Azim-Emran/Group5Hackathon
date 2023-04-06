@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
-import loginData from '../test/loginData.json';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext'
 
@@ -70,7 +69,6 @@ const LoginMenu = ({ show, onHide }) => {
     // If there are no errors, submit the form
     if (Object.keys(errors).length === 0) {
       // Send form data to server for processing
-      console.log(formData);
       // Close the window
       validation();
     }
@@ -90,7 +88,7 @@ const LoginMenu = ({ show, onHide }) => {
       } else {
         setErrors({ login: 'Invalid username or password' });
       }
-      console.log(errors);
+      //console.log(errors);
     })
 
   }

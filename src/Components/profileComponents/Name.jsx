@@ -1,11 +1,13 @@
 import { Card, Image } from "react-bootstrap"
 import { BsGear, BsEnvelopeAt } from "react-icons/bs"
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import axios from 'axios';
+import { AuthContext } from "../../AuthContext";
 
 
 const Name = () => {
-    const [isUser, setIsUser] = useState(true);
+    const { userId, setUserId } = useContext(AuthContext);
 
     const tooltip = (
         <Tooltip>
@@ -13,7 +15,18 @@ const Name = () => {
         </Tooltip>
     )
 
+    useEffect(() => {
+        fetchData()
+      }, [])
 
+      const fetchData = () => {
+        axios.get('/sp',{
+        })
+          .then((response) => (
+            console.log(response.data.data)
+          ))
+          .catch((error) => console.log(error))
+      }
     return (
         <Card className="card-container shadow-sm ">
             <Card.Body className="row">
@@ -22,15 +35,14 @@ const Name = () => {
                 </div>
                 <div className="col-9">
                 <Card.Title className="font-weight-bold d-flex justify-content-between align-items-center">
-                    Username
-                    {isUser && <OverlayTrigger overlay={tooltip}><BsGear/></OverlayTrigger> }    
+                    Hilda Machilda 
+                    {userId && <OverlayTrigger overlay={tooltip}><BsGear/></OverlayTrigger> }    
                 </Card.Title>
-                <Card.Title >Firstname Lastname</Card.Title>
                 <Card.Text className="font-weight-light">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi maxime quo accusamus eum obcaecati perferendis dolor, eaque nesciunt aperiam iusto!
+                As a freelance web developer, I specialize in creating dynamic and responsive websites that are tailored to your needs. Whether you need a simple landing page or a complex web application, I have the skills and expertise to deliver exceptional results. My services range from graphic design, including branding and visual identity, to programming and tech, including web development and e-commerce solutions. With years of experience in the industry, I pride myself on delivering quality work that exceeds expectations. Let's work together to bring your vision to life!
                 </Card.Text>
                 <Card.Text>
-                    <BsEnvelopeAt/>  MyEmail@email.com
+                    <BsEnvelopeAt/> testemail@gmail.com
                 </Card.Text>
 
                 </div>

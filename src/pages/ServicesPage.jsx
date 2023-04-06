@@ -5,7 +5,6 @@ import ExploreServices from "../Components/exploreComponents/ExploreServices";
 const ServicesPage = () => {
   return (
     <>
-      <Navbar />
       <div className="wrapper">
         <ExploreHeader />
         <ExploreServices />

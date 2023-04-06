@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RegisterMenu from "./RegisterMenu";
 import LoginMenu from "./LoginMenu";
 import { useContext, useEffect, useState, } from "react";
@@ -7,6 +7,9 @@ import { Image } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 
 const Navbar = () => {
+
+    const navigate = useNavigate();
+
     //State variables
     const [showLoginWindow, setShowLoginWindow] = useState(false);
     const [showRegWindow, setShowRegWindow] = useState(false);
@@ -15,7 +18,6 @@ const Navbar = () => {
     //Handlers to open and close login window
     const handleToggleLoginWindow = () => {
         setShowLoginWindow(!showLoginWindow)
-        console.log('')
     }
 
 
@@ -26,6 +28,8 @@ const Navbar = () => {
 
     const handleLogout = () => {
         setUserId('');
+        navigate('/');
+        
     }
 
 
@@ -41,10 +45,8 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
-                            {userId && <Link className="nav-link" to="/profile/:userId">Profile <span className="sr-only">(current)</span></Link>}
+                            {userId && <Link className="nav-link" to="/profile">Profile <span className="sr-only">(current)</span></Link>}
                         </li>
-                    </ul>
-                    <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
                             <Link className="nav-link" to="/services">Explore </Link>
                         </li>

@@ -14,13 +14,14 @@ function App() {
   return (
     <AuthProvider>
     <Router>
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Homepage/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/services" element={<ServicesPage/>}/>
       </Routes>
     </Router>
-    </AuthProvider
+    </AuthProvider>
   );
 }
 

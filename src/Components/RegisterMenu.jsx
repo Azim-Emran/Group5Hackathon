@@ -72,7 +72,7 @@ const RegisterMenu = ({ show, onHide }) => {
                 ))
                 .catch((error) => console.log(error))
             setUserId()
-            navigate('/profile/:userId')
+            navigate('/profile')
             // Close the window
             handleHide();
         }
