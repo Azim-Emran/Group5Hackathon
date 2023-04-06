@@ -9,6 +9,7 @@ import axios from "axios";
 
 const Services = () => {
     const { userId, setUserId } = useContext(AuthContext);
+    const [spData, setSpData] = useState([]);
 
     const [showServiceWindow, setShowServiceWindow] = useState(false);
 
@@ -19,20 +20,30 @@ const Services = () => {
 
     const [dbServices, setDbServices] = useState([])
 
+    // Load data from local storage when the component mounts
     useEffect(() => {
+        const storedData = localStorage.getItem('postServiceData')
+        if (storedData) {
+            setSpData(JSON.parse(storedData))
+        }
         fetchData()
     }, [])
 
-    const fetchData = () => {
-        axios.get('/sp')
-            .then((response) => {
+    // Save data to local storage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('postServiceData', JSON.stringify(spData));
+    }, [spData]);
 
-                const filteredData = response.data.data.filter(item => item.user_cred_id === userId);
-                setDbServices(filteredData);
-                console.log(dbServices)
-            })
-            .catch((error) => console.log(error))
-    }
+    // const fetchData = () => {
+    //     axios.get('/sp')
+    //         .then((response) => {
+
+    //             const filteredData = response.data.data.filter(item => item.user_cred_id === userId);
+    //             setDbServices(filteredData);
+    //             console.log(dbServices)
+    //         })
+    //         .catch((error) => console.log(error))
+    // }
 
     // const [services, setServices] = useState([
     //     {
@@ -72,40 +83,76 @@ const Services = () => {
 
     // ])
 
-    return (
-        <>
-            {userId && dbServices.length === 0 &&
-                <Card className="card-container shadow-sm p-5 align-items-center">
-                    <FaCogs size={300} />
-                    <Card.Text>
-                        Seems like you have not yet provides any services yet!
-                    </Card.Text>
-                    <Button onClick={handleToggleServiceWindow}>Add a Service</Button>
-                </Card>}
+//     return (
+//         <>
+//             {userId && dbServices.length === 0 &&
+//                 <Card className="card-container shadow-sm p-5 align-items-center">
+//                     <FaCogs size={300} />
+//                     <Card.Text>
+//                         Seems like you have not yet provides any services yet!
+//                     </Card.Text>
+//                     <Button onClick={handleToggleServiceWindow}>Add a Service</Button>
+//                 </Card>}
 
-            <div className="row">
+//             <div className="row">
 
-                {userId && dbServices.length > 0 &&
-                    <div className="col-md-4 col-sm-6">
-                        <Card className="shadow-sm card-container align-items-center ">
-                            <Card.Body className="d-flex flex-column align-items-center justify-content-center">
-                                <Card.Text>You have more service to provide?
-                                </Card.Text>
-                                <Button variant="primary" onClick={handleToggleServiceWindow}>+ Add a Service</Button>
-                            </Card.Body>
-                        </Card>
+//                 {userId && dbServices.length > 0 &&
+//                     <div className="col-md-4 col-sm-6">
+//                         <Card className="shadow-sm card-container align-items-center ">
+//                             <Card.Body className="d-flex flex-column align-items-center justify-content-center">
+//                                 <Card.Text>You have more service to provide?
+//                                 </Card.Text>
+//                                 <Button variant="primary" onClick={handleToggleServiceWindow}>+ Add a Service</Button>
+//                             </Card.Body>
+//                         </Card>
 
-                    </div>}
-                {dbServices.map((service, index) => (
-                    <div key={index} className="col-md-4 col-sm-6">
-                        <Service props={service} /></div>
-                ))}
+//                     </div>}
+//                 {dbServices.map((service, index) => (
+//                     <div key={index} className="col-md-4 col-sm-6">
+//                         <Service props={service} /></div>
+//                 ))}
 
-            </div>
-            <ServiceRegistration show={showServiceWindow} onHide={handleToggleServiceWindow} />
-        </>
+//             </div>
+//             <ServiceRegistration show={showServiceWindow} onHide={handleToggleServiceWindow} />
+//         </>
 
-    )
+//     )
+// }
+
+return (
+    <>
+        {userId && spData.length === 0 &&
+            <Card className="card-container shadow-sm p-5 align-items-center">
+                <FaCogs size={300} />
+                <Card.Text>
+                    Seems like you have not yet provides any services yet!
+                </Card.Text>
+                <Button onClick={handleToggleServiceWindow}>Add a Service</Button>
+            </Card>}
+
+        <div className="row">
+
+            {userId && spData.length > 0 &&
+                <div className="col-md-4 col-sm-6">
+                    <Card className="shadow-sm card-container align-items-center ">
+                        <Card.Body className="d-flex flex-column align-items-center justify-content-center">
+                            <Card.Text>You have more service to provide?
+                            </Card.Text>
+                            <Button variant="primary" onClick={handleToggleServiceWindow}>+ Add a Service</Button>
+                        </Card.Body>
+                    </Card>
+
+                </div>}
+            {spData.map((service, index) => (
+                <div key={index} className="col-md-4 col-sm-6">
+                    <Service props={service} /></div>
+            ))}
+
+        </div>
+        <ServiceRegistration show={showServiceWindow} onHide={handleToggleServiceWindow} />
+    </>
+
+)
 }
 
 export default Services
