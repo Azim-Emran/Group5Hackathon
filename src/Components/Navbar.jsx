@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import RegisterMenu from "./RegisterMenu";
 import LoginMenu from "./LoginMenu";
 import { useState, } from "react";
+import SearchBar from "./navBarComponents/searchbar";
 
 const Navbar = () => {
     //State variables
     const [showLoginWindow, setShowLoginWindow] = useState(false);
     const [showRegWindow, setShowRegWindow] = useState(false);
-    const [isUser, setIsUser] = useState(true);
+    const [isUser, setIsUser] = useState(false);
 
     //Handlers to open and close login window
     const handleToggleLoginWindow = () => {
@@ -35,6 +36,15 @@ const Navbar = () => {
                         <li className="nav-item active">
                             {isUser && <Link className="nav-link" to="/profile">Profile <span className="sr-only">(current)</span></Link>}
                         </li>
+                        {!isUser && (
+                            <div className="container">
+                                <div class="col align-self-center">
+                                    <SearchBar />
+                                </div>
+
+                            </div>
+                        )
+                        }
                     </ul>
                     {!isUser && (
                         <>
@@ -46,7 +56,6 @@ const Navbar = () => {
             </nav>
             <RegisterMenu show={showRegWindow} onHide={handleToggleRegWindow} />
             <LoginMenu show={showLoginWindow} onHide={handleToggleLoginWindow} />
-
         </>
 
 
