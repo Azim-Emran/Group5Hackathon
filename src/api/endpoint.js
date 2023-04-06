@@ -5,3 +5,5 @@ const Endpoints = {
     CRED: `${Constants.BASE_URL}user`,
     POST: `${Constants.BASE_URL}sp`
 }
+
+export default Endpoints
