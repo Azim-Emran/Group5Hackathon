@@ -1,20 +1,32 @@
-import { Card, Button, Image } from "react-bootstrap"
+import { Card, Image } from "react-bootstrap"
+import ServiceWindow from "./ServiceWindow";
+import { useState } from "react";
 
-const Service = (props) => {
+const Service = (data) => {
+
+    const [showServiceWindow, setShowServiceWindow] = useState(false);
+
+    //Handlers to open and close service window
+    const handleToggleServiceWindow = () => {
+        setShowServiceWindow(!showServiceWindow)
+    }
 
     return (
-        <a className="">
-            <Card className="card-container shadow-sm  align-items-center col">
-                <Image variant="top" src={props.service_photo} />
+
+        <>
+        <a className="card-link text-decoration-none" onClick={handleToggleServiceWindow}>
+            <Card className="shadow-sm card-container ">
+                <Image variant="top" src={data.props.service_photo} className="card-image" />
                 <Card.Body>
-                    <Card.Title>{props.service_title}</Card.Title>
+                    <Card.Title>{data.props.service_name}</Card.Title>
                     <Card.Text>
-                        {props.service_category}
+                        {data.props.service_category}
                     </Card.Text>
                 </Card.Body>
             </Card>
-
         </a>
+        <ServiceWindow show={showServiceWindow} onHide={handleToggleServiceWindow} data={data} />
+        </>
 
     )
 

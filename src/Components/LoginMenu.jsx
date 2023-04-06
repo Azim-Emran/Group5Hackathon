@@ -76,7 +76,7 @@ const LoginMenu = ({ show, onHide }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleHide}>
+    <Modal show={show} onHide={handleHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>User Login</Modal.Title>
       </Modal.Header>

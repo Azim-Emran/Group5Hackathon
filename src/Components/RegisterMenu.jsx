@@ -78,7 +78,7 @@ const RegisterMenu = ({ show, onHide }) => {
     //Checkbox: "regCheckBox"
 
     return (
-        <Modal show={show} onHide={handleHide}>
+        <Modal show={show} onHide={handleHide} centered>
             <Modal.Header closeButton={true}>
                 <Modal.Title>User Registration</Modal.Title>
             </Modal.Header>

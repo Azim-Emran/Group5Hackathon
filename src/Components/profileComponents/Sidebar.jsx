@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 
 const Sidebar = () => {
 
-    const [isUser, setIsUser] = useState(false)
+    const [isUser, setIsUser] = useState(true)
 
     const [portfolio,setPortfolio] = useState("Lorem ipsum dolor sit amet, consectetur adip")
     

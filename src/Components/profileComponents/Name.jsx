@@ -1,8 +1,11 @@
 import { Card, Image } from "react-bootstrap"
 import { BsGear } from "react-icons/bs"
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
+import { useState } from "react";
+
 
 const Name = () => {
+    const [isUser, setIsUser] = useState(true);
 
     const tooltip = (
         <Tooltip>
@@ -20,7 +23,7 @@ const Name = () => {
                 <div className="col-9">
                 <Card.Title className="font-weight-bold d-flex justify-content-between align-items-center">
                     Username
-                    <OverlayTrigger overlay={tooltip}><BsGear/></OverlayTrigger>    
+                    {isUser && <OverlayTrigger overlay={tooltip}><BsGear/></OverlayTrigger> }    
                 </Card.Title>
                 <Card.Title >Firstname Lastname</Card.Title>
                 <Card.Text className="font-weight-light">

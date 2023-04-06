@@ -5,6 +5,7 @@ import { useState } from "react"
 import Service from "./Service";
 
 const Services = () => {
+    const [isUser, setIsUser] = useState(true);
     const [services, setServices] = useState([
         {
             service_photo: "https://images.pexels.com/photos/845451/pexels-photo-845451.jpeg",
@@ -45,32 +46,31 @@ const Services = () => {
 
     return (
         <>
-            <Card className="card-container shadow-sm p-5 align-items-center">
-                <FaCogs size={300} />
-                <Card.Text>
-                    Seems like you have not yet provides any services yet!
-                </Card.Text>
-                <Button>Add a Service</Button>
-            </Card>
+            {isUser && services.length == 0 &&
+                <Card className="card-container shadow-sm p-5 align-items-center">
+                    <FaCogs size={300} />
+                    <Card.Text>
+                        Seems like you have not yet provides any services yet!
+                    </Card.Text>
+                    <Button>Add a Service</Button>
+                </Card>}
 
             <div className="row">
-                {/* {services.map((service, index) => (
-                    <div key={index}>
+                {services.map((service, index) => (
+                    <div key={index} className="col-md-4 col-sm-6">
                         <Service props={service} /></div>
-                ))} */}
-                <a className="">
-                    <Card className="card-container shadow-sm align-items-center col-4">
-                        <Image variant="top" src={services[0].service_photo} className="card-image"/>
-                        <Card.Body>
-                            <Card.Title>{services[0].service_title}</Card.Title>
-                            <Card.Text>
-                                {services[0].service_category}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                ))}
+                {isUser && services.length > 0 &&
+                    <div className="col-md-4 col-sm-6">
+                        <Card className="shadow-sm card-container align-items-center ">
+                            <Card.Body className="d-flex flex-column align-items-center justify-content-center">
+                                <Card.Text>You have more service to provide?
+                                </Card.Text>
+                                <Button variant="primary">Add a Service</Button>
+                            </Card.Body>
+                        </Card>
 
-                </a>
-
+                    </div>}
 
             </div>
         </>
