@@ -5,10 +5,10 @@ const JumboTwo = () => {
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-6 col-md-10">
-          <div class="section-title text-center pb-25">
-            <h3 class="title">Data</h3>
+          <div class="section-title text-center pb-14">
+            <h3 class="title">With a personal recruiter, you’ll get matched to roles that are right for you.</h3>
             <p class="text">
-              Find information about today's data product and wastage.
+              Find information about latest news.
             </p>
           </div>
         </div>
@@ -83,7 +83,7 @@ const JumboTwo = () => {
             <div class="pricing-icon text-center">
               <br />
               <br />
-              <img src="assets/images/Graph3.png" alt="" />
+              <img src="https://www.southstaffs.ac.uk/wp-content/uploads/2021/11/JobFair.jpg" alt="" />
               <br />
               <br />
             </div>
@@ -97,7 +97,7 @@ const JumboTwo = () => {
               <ul>
                 <li>
                   <i class="lni lni-check-mark-circle text-center"></i>Other
-                  available Data.
+                  available news.
                 </li>
                 <li>
                   <i class="lni lni-check-mark-circle"></i>{" "}
