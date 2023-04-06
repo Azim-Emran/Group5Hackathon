@@ -53,7 +53,7 @@ const RegisterMenu = ({ show, onHide }) => {
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-    };
+    };  
 
 
     // Reset the form data and errors when the modal is closed

@@ -3,9 +3,18 @@ import { Card, Button, Image } from "react-bootstrap"
 import { FaCogs } from "react-icons/fa";
 import { useState } from "react"
 import Service from "./Service";
+import ServiceRegistration from "./ServiceRegistration";
 
 const Services = () => {
     const [isUser, setIsUser] = useState(true);
+
+    const [showServiceWindow, setShowServiceWindow] = useState(false);
+
+    //Handlers to open and close login window
+    const handleToggleServiceWindow = () => {
+        setShowServiceWindow(!showServiceWindow)
+    }
+
     const [services, setServices] = useState([
         {
             service_photo: "https://images.pexels.com/photos/845451/pexels-photo-845451.jpeg",
@@ -66,13 +75,14 @@ const Services = () => {
                             <Card.Body className="d-flex flex-column align-items-center justify-content-center">
                                 <Card.Text>You have more service to provide?
                                 </Card.Text>
-                                <Button variant="primary">Add a Service</Button>
+                                <Button variant="primary" onClick={handleToggleServiceWindow}>Add a Service</Button>
                             </Card.Body>
                         </Card>
 
                     </div>}
 
             </div>
+            <ServiceRegistration show={showServiceWindow} onHide={handleToggleServiceWindow}/>
         </>
 
     )
