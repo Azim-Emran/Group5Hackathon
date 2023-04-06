@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext'
+
 
 const RegisterMenu = ({ show, onHide }) => {
+    const { userId, setUserId } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     // Email and password for registration
     const [formData, setFormData] = useState({
@@ -9,6 +15,11 @@ const RegisterMenu = ({ show, onHide }) => {
         regPassword: '',
         regConfirmPassword: '',
     });
+
+    const [postData, setPostData] = useState({
+        email: '',
+        password: ''
+    })
 
     // Error messages for each input
     const [errors, setErrors] = useState({
@@ -42,12 +53,34 @@ const RegisterMenu = ({ show, onHide }) => {
         setErrors(newErrors);
 
         if (!hasError) {
-            // Send form data to server for processing
+            setPostData({
+                email: formData.regEmail,
+                password: formData.regPassword
+            })
+            axios.post('/user', postData)
+                .then(response => {
+                    console.log('Response:', response.data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             console.log(formData);
+
+            axios.get('/user')
+                .then((response) => (
+                    setUserId(response.data.data[response.data.data.length - 1].user_cred_id)
+                ))
+                .catch((error) => console.log(error))
+            setUserId()
+            navigate('/profile/:userId')
             // Close the window
-            onHide();
+            handleHide();
         }
     };
+
+    const registerSuccess = () => {
+
+    }
 
     // Handler for input changes
     const handleInputChange = (event) => {
