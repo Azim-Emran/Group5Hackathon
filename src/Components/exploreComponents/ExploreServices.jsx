@@ -31,7 +31,7 @@ const ExploreServices = () => {
   return (
     <>
       <div class="wrapper">
-        <div>
+        {/* <div>
           <Button
             class="btn btn-outline-primary mr-3"
             onClick={() => setSelectedCategory("All")}
@@ -62,12 +62,12 @@ const ExploreServices = () => {
           >
             Programming & Tech
           </Button>
-        </div>
+        </div> */}
 
         <div className="row">
           {services.map((service) => (
             <div
-              className="col-md-4 col-sm-6 row"
+              className="col-md-4 col-sm-6 row px-4"
               key={service.service_post_id}
             >
               <Card className="shadow-sm card-container">
@@ -75,8 +75,8 @@ const ExploreServices = () => {
                   <span>{service.service_photo}</span>
                   <Card.Title>{service.service_name}</Card.Title>
                   <Card.Text>{service.service_category}</Card.Text>
-                  <p>{service.service_description}</p>
-                  <p>{service.service_price}</p>
+                  <p className="font-italic">{service.service_description}</p>
+                  <p>${service.service_price}</p>
                 </Card.Body>
               </Card>
             </div>

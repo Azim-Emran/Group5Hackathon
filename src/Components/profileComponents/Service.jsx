@@ -15,8 +15,8 @@ const Service = (data) => {
 
         <>
         <a className="card-link text-decoration-none" onClick={handleToggleServiceWindow}>
-            <Card className="shadow-sm card-container ">
-                <Image variant="top" src={data.props.service_photo} className="card-image" />
+            <Card className="shadow-sm card-container s-container">
+                {/* <Image variant="top" src={data.props.service_photo} className="card-image" /> */}
                 <Card.Body>
                     <Card.Title>{data.props.service_name}</Card.Title>
                     <Card.Text>

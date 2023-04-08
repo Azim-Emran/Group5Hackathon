@@ -82,6 +82,7 @@ const LoginMenu = ({ show, onHide }) => {
         success = true;
         setUserId(login.user_cred_id);
         handleHide();
+        alert("Succesfully logged in!")
       }
       if (success) {
         setIsSuccess(true);

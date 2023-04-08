@@ -1,11 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import axios from "axios";
 import Endpoints from "../../api/endpoint";
 
-const ServiceRegistration = ({ show, onHide }) => {
+const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     //For dropdown
+
+    const [spData, setSpData] = useState([]);
+    const [services, setServices] = useState([])
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('postServiceData')
+        if (storedData) {
+            setSpData(JSON.parse(storedData))
+        }
+        console.log(storedData)
+        console.log(spData)
+
+
+    }, [])
+
+    // Save data to local storage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('postServiceData', JSON.stringify(spData));
+    }, [spData]);
 
     const categoryList = [
         "Graphic Design",
@@ -14,11 +33,11 @@ const ServiceRegistration = ({ show, onHide }) => {
         "Programming & Tech",
     ]
     const [formData, setFormData] = useState({
-        serviceName: '',
-        serviceDescription: '',
-        servicePrice: '',
-        serviceCategory: '',
-        servicePhoto: '',
+        service_name: '',
+        service_description: '',
+        service_price: '',
+        service_category: '',
+        service_photo: '',
     });
 
     const [errors, setErrors] = useState({});
@@ -30,61 +49,64 @@ const ServiceRegistration = ({ show, onHide }) => {
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
-        setFormData({ ...formData, serviceCategory: event.target.value });
+        setFormData({ ...formData, service_category: event.target.value });
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         const errors = validate(formData);
-        switch (formData.serviceCategory) {
+        switch (formData.service_category) {
             case categoryList[0]:
-                setFormData({ ...formData, servicePhoto: "../../images/graphic-design.jpg" })
+                setFormData({ ...formData, service_photo: "../images/graphic-design.jpg" })
                 break;
             case categoryList[1]:
-                setFormData({ ...formData, servicePhoto: "../../images/photography-videography.jpg" })
+                setFormData({ ...formData, service_photo: "../images/photography-videography.jpg" })
                 break;
             case categoryList[2]:
-                setFormData({ ...formData, servicePhoto: "../../images/writing-translation.jpg" })
+                setFormData({ ...formData, service_photo: "../images/writing-translation.jpg" })
                 break;
             case categoryList[3]:
-                setFormData({ ...formData, servicePhoto: "../../images/programming-tech.jpg" })
+                setFormData({ ...formData, service_photo: "../images/programming-tech.jpg" })
                 break;
             default:
-                setFormData({ ...formData, servicePhoto: "" })
+                setFormData({ ...formData, service_photo: "" })
         }
         if (Object.keys(errors).length === 0) {
-            // try {
-            //     await axios.post(Endpoints.POST, formData);
-            //     // handle success (e.g. show a success message)
-            //     console.log('Service added successfully');
-            // } catch (error) {
-            //     // handle error (e.g. show an error message)
-            //     console.log('Error adding service', error);
-            // }
-            //User cred_ID not yet prepared, so can't test this.
+
+            //insert formData to spData 
+            insertData()
         } else {
             setErrors(errors);
         }
     };
 
+    const insertData = () => {
+
+        const updatedServices = [...data];
+        updatedServices.push(formData);
+        updateServices(updatedServices);
+        handleHide();
+
+    }
+
     const validate = (formData) => {
         let errors = {};
 
-        if (!formData.serviceName) {
+        if (!formData.service_name) {
             errors.serviceName = "Please enter a service name.";
         }
 
-        if (!formData.serviceDescription) {
+        if (!formData.service_description) {
             errors.serviceDescription = "Please enter a service description.";
         }
 
-        if (!formData.servicePrice) {
+        if (!formData.service_price) {
             errors.servicePrice = "Please enter a service price.";
-        } else if (!/^\d+(\.\d{1,2})?$/.test(formData.servicePrice)) {
+        } else if (!/^\d+(\.\d{1,2})?$/.test(formData.service_price)) {
             errors.servicePrice = "Please enter a valid price.";
         }
 
-        if (!formData.serviceCategory) {
+        if (!formData.service_category) {
             errors.serviceCategory = "Please select a category.";
         }
 
@@ -95,9 +117,9 @@ const ServiceRegistration = ({ show, onHide }) => {
     // Reset the form data and errors when the modal is closed
     const handleHide = () => {
         setFormData({
-            serviceName: '',
-            serviceDescription: '',
-            servicePrice: '',
+            service_name: '',
+            service_description: '',
+            service_price: '',
         });
         setErrors({
             serviceName: '',
@@ -119,10 +141,10 @@ const ServiceRegistration = ({ show, onHide }) => {
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
                         {/* ======== SERVICE NAME ========== */}
-                        <Form.Group controlId="serviceName" className="mb-3">
+                        <Form.Group controlId="service_name" className="mb-3">
                             <Form.Label>Name</Form.Label>
                             <Form.Control
-                                name="serviceName"
+                                name="service_name"
                                 value={formData.service_name}
                                 onChange={handleInputChange}
                                 required
@@ -135,7 +157,7 @@ const ServiceRegistration = ({ show, onHide }) => {
 
                         <div className="row">
                             {/* ======== SERVICE CATEGORY ========== */}
-                            <Form.Group controlId="serviceCategory" className="mb-3 col-6">
+                            <Form.Group controlId="service_category" className="mb-3 col-6">
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange} required>
                                     <option value="" selected disabled></option>
@@ -147,14 +169,14 @@ const ServiceRegistration = ({ show, onHide }) => {
                             </Form.Group>
 
                             {/* ======== SERVICE PRICE ========== */}
-                            <Form.Group controlId="servicePrice" className="mb-3 col-6">
+                            <Form.Group controlId="service_price" className="mb-3 col-6">
                                 <Form.Label>Price</Form.Label>
                                 <InputGroup>
                                     <InputGroup.Text>$</InputGroup.Text>
                                     <Form.Control
                                         type="number"
-                                        name="servicePrice"
-                                        value={formData.servicePrice}
+                                        name="service_price"
+                                        value={formData.service_price}
                                         onChange={handleInputChange}
                                         required
                                         isInvalid={!!errors.servicePrice}
@@ -168,11 +190,11 @@ const ServiceRegistration = ({ show, onHide }) => {
                         </div>
 
                         {/* ======== SERVICE DECSRIPTION ========== */}
-                        <Form.Group controlId="serviceDescription" className="mb-3">
+                        <Form.Group controlId="service_description" className="mb-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 as="textarea" rows={3}
-                                name="serviceDescription"
+                                name="service_description"
                                 value={formData.service_description}
                                 onChange={handleInputChange}
                                 required
