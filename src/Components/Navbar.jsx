@@ -17,41 +17,49 @@ const Navbar = () => {
     const { userId, setUserId } = useContext(AuthContext);
 
 
-  //Handlers to open and close login window
-  const handleToggleLoginWindow = () => {
-    setShowLoginWindow(!showLoginWindow);
-  };
+    //Handlers to open and close login window
+    const handleToggleLoginWindow = () => {
+        setShowLoginWindow(!showLoginWindow);
+    };
 
-  //Handlers to open and close registration window
-  const handleToggleRegWindow = () => {
-    setShowRegWindow(!showRegWindow);
-  };
-  
-  
+    //Handlers to open and close registration window
+    const handleToggleRegWindow = () => {
+        setShowRegWindow(!showRegWindow);
+    };
+
+
     const handleLogout = () => {
         setUserId('');
         navigate('/');
-        
+
     }
 
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark accent-color wrapper">
-            <img src={Logo} alt="" className="logo" />
+                <img src={Logo} alt="" className="logo" />
                 <Link className="navbar-brand" to="/">Home</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
                             {userId && <Link className="nav-link" to="/profile">Profile <span className="sr-only">(current)</span></Link>}
                         </li>
-                        <li className="nav-item active">
-                            <Link className="nav-link" to="/services">Explore </Link>
+                        <li className="nav-item dropdown">
+                            <div>
+                            <a className="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Explore
+                            </a>
+                            </div>
+                            <ul className="dropdown-menu mb-n1 mt-n1" aria-labelledby="navbarDropdown">
+                                <li><Link className="dropdown-item py-3" to="/users">Freelancers</Link></li>
+                                <li><Link className="dropdown-item py-3" to="/services">Services</Link></li>
+                            </ul>
                         </li>
                     </ul>
+
                     {userId ? (
                         <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button>
                     ) : (

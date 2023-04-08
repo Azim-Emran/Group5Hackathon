@@ -7,6 +7,7 @@ import ServicesPage from './pages/ServicesPage';
 import React, { useState, useEffect } from 'react';
 import {AuthProvider} from './AuthContext';
 import Navbar from './Components/Navbar';
+import UsersPage from './pages/UsersPage';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Homepage/>}/>
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/services" element={<ServicesPage/>}/>
+        <Route path="/users" element={<UsersPage/>}/>
       </Routes>
     </Router>
     </AuthProvider>
