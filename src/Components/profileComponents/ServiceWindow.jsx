@@ -17,7 +17,7 @@ const ServiceWindow = ({ show, onHide, data }) => {
                 <Modal.Body>
                     <div className="row">
                         <div className="col-md-4">
-                            <Image variant="top" src={data.props.service_photo} className="card-image" />
+                            {/* <Image variant="top" src={data.props.service_photo} className="card-image" /> */}
                         </div>
                         <div className="col-md-8">
                             <div className="font-italic">{data.props.service_description}</div>
