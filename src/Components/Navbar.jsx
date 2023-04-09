@@ -57,6 +57,7 @@ const Navbar = () => {
 
     return (
         <>
+        
             <nav className="navbar navbar-expand-lg navbar-dark accent-color wrapper">
                 <img src={Logo} alt="" className="logo" />
                 <Link className="navbar-brand" to="/">Home</Link>

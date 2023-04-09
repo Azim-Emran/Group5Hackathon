@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 //login_session is for login storage
 const LoginMenu = ({ show, onHide }) => {
@@ -103,7 +104,13 @@ const LoginMenu = ({ show, onHide }) => {
         //setUserId(login.user_cred_id);
         loginHandler(login.user_cred_id)
         handleHide();
-        <Alert variant="success">Succesfully logged in!</Alert>
+        toast.success("You have successfully logged in!",{
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+        })
         return;
       }
       if (!success)  {
