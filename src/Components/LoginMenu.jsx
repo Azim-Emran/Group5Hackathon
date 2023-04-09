@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import { AuthContext } from '../AuthContext'
 
-
+//login_session is for login storage
 const LoginMenu = ({ show, onHide }) => {
-  const { userId, setUserId } = useContext(AuthContext);
 
-  const [loginDetails,setLoginDetails] = useState([{}])
+  //onst { userId, setUserId } = useContext(AuthContext);
 
+  //To store login details taken from the database
+  const [loginDetails, setLoginDetails] = useState([{}])
+
+  //To store login details entered by the user
   const [formData, setFormData] = useState({
     loginEmail: '',
     loginPassword: '',
@@ -18,6 +20,7 @@ const LoginMenu = ({ show, onHide }) => {
     fetchData()
   }, [])
 
+  //Function to take login details from the database
   const fetchData = () => {
     axios.get('/user')
       .then((response) => (
@@ -27,12 +30,15 @@ const LoginMenu = ({ show, onHide }) => {
   }
 
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  //const [isSuccess, setIsSuccess] = useState(false);
+
+  //To store error messages when login failed
   const [errors, setErrors] = useState({});
 
+  //Function to reset form entries when hiding the modal
   const handleHide = () => {
     setFormData({
-      loginId:'',
+      loginId: '',
       loginEmail: '',
       loginPassword: '',
     });
@@ -43,11 +49,13 @@ const LoginMenu = ({ show, onHide }) => {
     onHide();
   };
 
+  //Function to handle whenever the input fields are being entered
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  //Function to handle when the form is being submitted
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -74,19 +82,31 @@ const LoginMenu = ({ show, onHide }) => {
     }
   };
 
+  const loginHandler = (login_id) => {
+
+
+    const sessionData = {
+      isLoggedIn: true,
+      userId: login_id,
+    }
+    localStorage.setItem('login_session', JSON.stringify(sessionData));
+    console.log(localStorage.getItem('login_session'));
+
+  }
+
   const validation = () => {
-    
+
     let success = false;
     loginDetails.forEach((login) => {
-      if (formData.loginEmail === login.email &&  formData.loginPassword === login.password) {
+      if (formData.loginEmail === login.email && formData.loginPassword === login.password) {
         success = true;
-        setUserId(login.user_cred_id);
+        //setUserId(login.user_cred_id);
+        loginHandler(login.user_cred_id)
         handleHide();
-        alert("Succesfully logged in!")
+        <Alert variant="success">Succesfully logged in!</Alert>
+        return;
       }
-      if (success) {
-        setIsSuccess(true);
-      } else {
+      if (!success)  {
         setErrors({ login: 'Invalid username or password' });
       }
       //console.log(errors);
@@ -94,9 +114,6 @@ const LoginMenu = ({ show, onHide }) => {
 
   }
 
-  const login = () => {
-
-  }
 
   // const onClickHandler = (event) => {
   //   event.preventDefault();
