@@ -1,129 +1,174 @@
-import React, { useState } from 'react';
-import loginData from '../test/loginData.json'
+import React, { useContext, useEffect, useState } from 'react';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import axios from 'axios';
 
-const LoginMenu = ({ onClose }) => {
+//login_session is for login storage
+const LoginMenu = ({ show, onHide }) => {
 
-    const [formData, setFormData] = useState({
-        loginEmail: '',
-        loginPassword: ''
+  //onst { userId, setUserId } = useContext(AuthContext);
+
+  //To store login details taken from the database
+  const [loginDetails, setLoginDetails] = useState([{}])
+
+  //To store login details entered by the user
+  const [formData, setFormData] = useState({
+    loginEmail: '',
+    loginPassword: '',
+  });
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  //Function to take login details from the database
+  const fetchData = () => {
+    axios.get('/user')
+      .then((response) => (
+        setLoginDetails(response.data.data)
+      ))
+      .catch((error) => console.log(error))
+  }
+
+
+  //const [isSuccess, setIsSuccess] = useState(false);
+
+  //To store error messages when login failed
+  const [errors, setErrors] = useState({});
+
+  //Function to reset form entries when hiding the modal
+  const handleHide = () => {
+    setFormData({
+      loginId: '',
+      loginEmail: '',
+      loginPassword: '',
     });
-    const [isSuccess, setIsSuccess] = useState(false)
+    setErrors({
+      loginEmail: '',
+      loginPassword: '',
+    });
+    onHide();
+  };
 
+  //Function to handle whenever the input fields are being entered
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const [errors, setErrors] = useState({});
+  //Function to handle when the form is being submitted
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
+    // Check for errors
+    const emailRegex = /\S+@\S+\.\S+/;
+    let errors = {};
+    if (!formData.loginEmail) {
+      errors.loginEmail = 'Email is required';
+    } else if (!emailRegex.test(formData.loginEmail)) {
+      errors.loginEmail = 'Invalid email format';
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    if (!formData.loginPassword) {
+      errors.loginPassword = 'Password is required';
+    }
 
-        // Check for errors
-        const emailRegex = /\S+@\S+\.\S+/;
-        let errors = {};
-        if (!formData.loginEmail) {
-            errors.loginEmail = "Email is required";
-        } else if (!emailRegex.test(formData.loginEmail)) {
-            errors.loginEmail = "Invalid email format";
-        }
+    setErrors(errors);
 
-        if (!formData.loginPassword) {
-            errors.loginPassword = "Password is required";
-        }
+    // If there are no errors, submit the form
+    if (Object.keys(errors).length === 0) {
+      // Send form data to server for processing
+      // Close the window
+      validation();
+    }
+  };
 
-        setErrors(errors);
+  const loginHandler = (login_id) => {
 
-        // If there are no errors, submit the form
-        if (Object.keys(errors).length === 0) {
-            // Send form data to server for processing
-            console.log(formData);
-            // Close the window
-            onClose();
-        }
-    };
 
-    const onClickHandler = (event) => {
-        event.preventDefault();
-        let success = false;
-        loginData.users.forEach((login) => {
-            if (login.email === formData.loginEmail && login.password === formData.loginPassword) {
-                success = true;
-            }
-        });
+    const sessionData = {
+      isLoggedIn: true,
+      userId: login_id,
+    }
+    localStorage.setItem('login_session', JSON.stringify(sessionData));
+    console.log(localStorage.getItem('login_session'));
 
-        console.log(success);
-    
-        if (success) {
-            setIsSuccess(true);
-        } else {
-            setErrors({ login: "Invalid username or password" });
-        }
-        console.log(errors);
-    };
-    
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  }
 
-    //ID for each var:
-    //Email: "loginEmail"
-    //Pwd:  "loginPassword"
+  const validation = () => {
 
-    return (
-        <div className="window-overlay" onClick={handleOverlayClick}>
-            <div className="window-container">
-                <div className="window border rounded shadow">
-                    <div className="window-header">
-                        <span className="window-title">User Login</span>
-                        <button className="window-close" onClick={onClose}>
-                            &times;
-                        </button>
-                    </div>
-                    {errors.login ? <div className="invalid-feedback">{errors.login}</div> : null}
-                    <div className="window-content">
-                        <form onSubmit={handleSubmit}>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="regEmail">Email</label>
-                                <input
-                                    type="email"
-                                    name="loginEmail"
-                                    id="loginEmail"
-                                    className="form-control"
-                                    value={formData.loginEmail}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="loginPassword"
-                                    id="loginPassword"
-                                    className="form-control"
-                                    value={formData.loginPassword}
-                                    onChange={handleInputChange}
-                                    required
-                                />
+    let success = false;
+    loginDetails.forEach((login) => {
+      if (formData.loginEmail === login.email && formData.loginPassword === login.password) {
+        success = true;
+        //setUserId(login.user_cred_id);
+        loginHandler(login.user_cred_id)
+        handleHide();
+        <Alert variant="success">Succesfully logged in!</Alert>
+        return;
+      }
+      if (!success)  {
+        setErrors({ login: 'Invalid username or password' });
+      }
+      //console.log(errors);
+    })
 
-                            </div>
-                            <button
-                                type="submit"
-                                id="loginButton"
-                                className="btn btn-primary btn-block mb-4"
-                                onClick={onClickHandler}
-                            >Sign In</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  }
 
-    );
+
+  // const onClickHandler = (event) => {
+  //   event.preventDefault();
+  //   let success = false;
+  //   loginData.users.forEach((login) => {
+  //     if (login.email === formData.loginEmail && login.password === formData.loginPassword) {
+  //       success = true;
+  //     }
+  //   });
+
+  //   console.log(success);
+
+  //   if (success) {
+  //     setIsSuccess(true);
+  //   } else {
+  //     setErrors({ login: 'Invalid username or password' });
+  //   }
+  //   console.log(errors);
+  // };
+
+  return (
+    <Modal show={show} onHide={handleHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>User Login</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {errors.login ? <Alert variant="danger">{errors.login}</Alert> : null}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="loginEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="loginEmail"
+              value={formData.loginEmail}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="loginPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="loginPassword"
+              value={formData.loginPassword}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" className="btn-block">
+            Sign In
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 };
 
 export default LoginMenu;
