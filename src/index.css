@@ -147,6 +147,22 @@ apply to background or text color when needed */
   object-fit: cover;
 }
 
+.btn-1{
+  background-color: #F88812;
+  color:#fff;
+  text-decoration: none;
+}
+
+.link-1{
+  color:#fff;
+  text-decoration: none;
+}
+
+.link-1 :hover{
+  color:#fff;
+  text-decoration: none;
+}
+
 
 /* ========== EXPLORE FREELANCER PAGE ENDS ========= */
 

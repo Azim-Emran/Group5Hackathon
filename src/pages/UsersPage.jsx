@@ -8,6 +8,7 @@ const UsersPage = () => {
         <UserHeader />
         <UserExplore />
         </>
+        
     )
 
 }
