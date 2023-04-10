@@ -129,6 +129,12 @@ apply to background or text color when needed */
 
 /* ========== PROFILE PAGE ENDS ========= */
 
+
+/* ========== EXPLORE PAGE STARTS ========= */
+/* ========== EXPLORE PAGE ENDS ========= */
+
+/* ========== EXPLORE FREELANCER PAGE STARTS ========= */
+
 .card-container-2{
   width:100%;
   border-top: 6px solid #C285FF;
@@ -137,11 +143,9 @@ apply to background or text color when needed */
   min-height:300px;
 }
 
-/* ========== EXPLORE PAGE STARTS ========= */
-/* ========== EXPLORE PAGE ENDS ========= */
-
-/* ========== EXPLORE FREELANCER PAGE STARTS ========= */
-
+.card-container-2 >img{
+  object-fit: cover;
+}
 
 
 /* ========== EXPLORE FREELANCER PAGE ENDS ========= */

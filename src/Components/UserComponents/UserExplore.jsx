@@ -74,9 +74,7 @@ const UserExplore = () => {
               <Card.Img variant="top" src="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png" />
                 <Card.Body>
                   <Card.Title>{freelancer.user_name}</Card.Title>
-                  <Card.Text>{freelancer.user_category}</Card.Text>
                   <Card.Text>{freelancer.user_description}</Card.Text>
-                  <Card.Text>{freelancer.user_photo}</Card.Text>
                   <Button className="btn-1" variant="secondary">View More</Button>
                 </Card.Body>
               </Card>
