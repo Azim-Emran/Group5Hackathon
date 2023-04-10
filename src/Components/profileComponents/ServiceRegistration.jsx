@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import axios from "axios";
-import Endpoints from "../../api/endpoint";
+import Endpoints from "../../API/endpoint";
 
 const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
