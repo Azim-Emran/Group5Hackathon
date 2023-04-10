@@ -2,7 +2,7 @@ import { Card, Image } from "react-bootstrap"
 import ServiceWindow from "./ServiceWindow";
 import { useState } from "react";
 
-const Service = ({userId, sessionData, service}) => {
+const Service = (data) => {
 
     const [showServiceWindow, setShowServiceWindow] = useState(false);
 
@@ -11,6 +11,8 @@ const Service = ({userId, sessionData, service}) => {
         setShowServiceWindow(!showServiceWindow)
     }
 
+    console.log("This is ", data)
+
     return (
 
         <>
@@ -18,9 +20,9 @@ const Service = ({userId, sessionData, service}) => {
             <Card className="shadow-sm card-container s-container">
                 {/* <Image variant="top" src={data.props.service_photo} className="card-image" /> */}
                 <Card.Body>
-                    <Card.Title>{data.props.service_name}</Card.Title>
+                    <Card.Title>{data.data.service_name}</Card.Title>
                     <Card.Text>
-                        {data.props.service_category}
+                        {data.data.service_category}
                     </Card.Text>
                 </Card.Body>
             </Card>
