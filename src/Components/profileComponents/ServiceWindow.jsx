@@ -12,17 +12,25 @@ const ServiceWindow = ({ show, onHide, data }) => {
 
             <Modal show={show} onHide={handleHide} centered dialogClassName="service-modal-container">
                 <Modal.Header closeButton>
-                    <Modal.Title>{data.props.service_name}</Modal.Title>
+                    <Modal.Title>{data.data.service_name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
                         <div className="col-md-4">
-                            {/* <Image variant="top" src={data.props.service_photo} className="card-image" /> */}
+                            {/* <Image variant="top" src={data.data.service_photo} className="card-image" /> */}
                         </div>
                         <div className="col-md-8">
-                            <div className="font-italic">{data.props.service_description}</div>
-                            Price: ${data.props.service_price}<br/>
-                            Category: {data.props.service_category}
+                            <div className="font-italic mb-3">
+                                <span className="font-weight-bold">Description:
+                                </span><br/>{data.data.service_description}</div>
+                            <div className="mb-3">
+                            <span className="font-weight-bold">Price:
+                                </span><br/>${data.data.service_price}
+                                </div>
+                            <div className="">
+                            <span className="font-weight-bold">Category:
+                                </span><br/>{data.data.service_category}
+                                </div>
 
                         </div>
                     </div>

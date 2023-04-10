@@ -6,7 +6,7 @@ import Service from "./Service";
 import ServiceRegistration from "./ServiceRegistration";
 
 const Services = ({userId, sessionData, servicesData}) => {
-    const [spData, setSpData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [storageChanged, setStorageChanged] = useState(false);
 
     const [showServiceWindow, setShowServiceWindow] = useState(false);
@@ -19,6 +19,10 @@ const Services = ({userId, sessionData, servicesData}) => {
     const updateServices = (updatedServices) => {
         setServices(updatedServices);
       }
+
+      useEffect(()=>{
+        setFilteredData(servicesData.filter(item => item.user_cred_id === 46));
+      },[servicesData])
     
 
 const [services, setServices] = useState([
@@ -64,7 +68,7 @@ const [services, setServices] = useState([
 
 return (
     <>
-        {sessionData.isLoggedIn && sessionData.userId === userId && servicesData.length == 0 &&
+        {sessionData.isLoggedIn && sessionData.userId === userId && filteredData.length == 0 &&
             <Card className="card-container shadow-sm p-5 align-items-center">
                 <FaCogs size={300} />
                 <Card.Text>
@@ -74,7 +78,7 @@ return (
             </Card>}
 
         <div className="row">
-            {sessionData.isLoggedIn && sessionData.userId === userId && servicesData.length > 0 &&
+            {sessionData.isLoggedIn && sessionData.userId === userId && filteredData.length > 0 &&
                 <div className="col-md-4 col-sm-6">
                     <Card className="shadow-sm card-container align-items-center ">
                         <Card.Body className="d-flex flex-column align-items-center justify-content-center">
@@ -85,9 +89,9 @@ return (
                     </Card>
 
                 </div>}
-            {servicesData.map((service, index) => (
+            {filteredData.map((service, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
-                    <Service props={service} /></div>
+                    <Service data={service} /></div>
             ))}
 
         </div>

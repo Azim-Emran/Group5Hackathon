@@ -8,6 +8,7 @@ import { AuthContext } from "../../AuthContext";
 
 const Name = () => {
     const { userId, setUserId } = useContext(AuthContext);
+    const [ serviceData, setServiceData] = useState([])
 
     const tooltip = (
         <Tooltip>
@@ -23,7 +24,7 @@ const Name = () => {
         axios.get('/sp',{
         })
           .then((response) => (
-            console.log(response.data.data)
+            setServiceData(response.data.data)
           ))
           .catch((error) => console.log(error))
       }
