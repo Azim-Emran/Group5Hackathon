@@ -11,6 +11,8 @@ const Service = (data) => {
         setShowServiceWindow(!showServiceWindow)
     }
 
+    console.log("This is ", data)
+
     return (
 
         <>
@@ -18,9 +20,9 @@ const Service = (data) => {
             <Card className="shadow-sm card-container s-container">
                 {/* <Image variant="top" src={data.props.service_photo} className="card-image" /> */}
                 <Card.Body>
-                    <Card.Title>{data.props.service_name}</Card.Title>
+                    <Card.Title>{data.data.service_name}</Card.Title>
                     <Card.Text>
-                        {data.props.service_category}
+                        {data.data.service_category}
                     </Card.Text>
                 </Card.Body>
             </Card>

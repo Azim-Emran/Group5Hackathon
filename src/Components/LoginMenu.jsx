@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 //login_session is for login storage
-const LoginMenu = ({ show, onHide }) => {
-
-  //onst { userId, setUserId } = useContext(AuthContext);
+const LoginMenu = ({ show, onHide, setSessionData }) => {
 
   //To store login details taken from the database
   const [loginDetails, setLoginDetails] = useState([{}])
+
+  const navigate = useNavigate();
 
   //To store login details entered by the user
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const LoginMenu = ({ show, onHide }) => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [  ])
 
   //Function to take login details from the database
   const fetchData = () => {
@@ -91,7 +92,9 @@ const LoginMenu = ({ show, onHide }) => {
       userId: login_id,
     }
     localStorage.setItem('login_session', JSON.stringify(sessionData));
-    console.log(localStorage.getItem('login_session'));
+    setSessionData(localStorage.getItem('login_session'))
+    //console.log(localStorage.getItem('login_session'));
+
 
   }
 
@@ -111,6 +114,7 @@ const LoginMenu = ({ show, onHide }) => {
           closeOnClick: true,
           pauseOnHover: true,
         })
+        navigate('/profile/'+login.user_cred_id)
         return;
       }
       if (!success)  {

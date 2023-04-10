@@ -1,12 +1,30 @@
 import axios from 'axios';
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext'
 
 
 const RegisterMenu = ({ show, onHide }) => {
-    const { userId, setUserId } = useContext(AuthContext);
+
+    const [sessionData, setSessionData] = useState({});
+
+    const fetchSessionData = () => {
+        const storedSessionData = localStorage.getItem('login_session');
+
+        if (storedSessionData) {
+            const sessionObj = JSON.parse(storedSessionData);
+
+            setSessionData({
+                isLoggedIn: sessionObj.isLoggedIn,
+                userId: sessionObj.userId,
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchSessionData();
+    }, [localStorage.getItem('login_session')]);
+
     const navigate = useNavigate();
 
     // Email and password for registration
@@ -53,34 +71,59 @@ const RegisterMenu = ({ show, onHide }) => {
         setErrors(newErrors);
 
         if (!hasError) {
-            setPostData({
+
+            axios.post('/user', {
                 email: formData.regEmail,
                 password: formData.regPassword
-            })
-            axios.post('/user', postData)
-                .then(response => {
-                    console.log('Response:', response.data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            console.log(formData);
+              })
+              .then(response => {
+                console.log('Response:', response.data);
+                navigate('/profile');
+                handleHide();
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+        // console.log("Before post",formData) 
+        //     setPostData({
+        //         email: formData.regEmail,
+        //         password: formData.regPassword
+        //     })
+        //     console.log(postData)   
+        //     try {
+        //         const response = axios.post('/user', postData);
+        //         console.log('Response:', response.data, postData);
+        //         navigate('/profile');
+        //         handleHide();
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //     }
+            // if (!hasError) {
+            //     setPostData({
+            //         email: formData.regEmail,
+            //         password: formData.regPassword
+            //     })
+            //     console.log("This is" +postData)
+            //     axios.post('/user', postData)
+            //         .then(response => {
+            //             console.log('Response:', response.data, postData);
+            //         })
+            //         .catch(error => {
+            //             console.error('Error:', error);
+            //         });
+            //     console.log(formData);
 
-            axios.get('/user')
-                .then((response) => (
-                    setUserId(response.data.data[response.data.data.length - 1].user_cred_id)
-                ))
-                .catch((error) => console.log(error))
-            setUserId()
-            navigate('/profile')
+            // axios.get('/user')
+            //     .then((response) => (
+            //         setUserId(response.data.data[response.data.data.length - 1].user_cred_id)
+            //     ))
+            //     .catch((error) => console.log(error))
+            //setUserId()
+            // navigate('/profile')
             // Close the window
-            handleHide();
+            // handleHide();
         }
     };
-
-    const registerSuccess = () => {
-
-    }
 
     // Handler for input changes
     const handleInputChange = (event) => {

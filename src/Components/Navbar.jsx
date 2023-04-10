@@ -2,8 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import RegisterMenu from "./RegisterMenu";
 import LoginMenu from "./LoginMenu";
 import Logo from "../images/logo.png";
-import { useState } from "react";
-import { Alert } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 
 import StyleLogo from "../Components/smallComponents/Logo.css";
@@ -11,17 +10,25 @@ import StyleLogo from "../Components/smallComponents/Logo.css";
 
 //login_session is for login storage
 const Navbar = () => {
-//     const storedSessionData = localStorage.getItem('login_session')
-    
-//   console.log(localStorage.getItem('login_session'))
-//     const [sessionData, setSessionData] = useState({})
-//     if (storedSessionData) {
-//         const sessionObj = JSON.parse(sessionData)
-//         setSessionData({
-//             isLoggedIn: sessionObj.isLoggedIn,
-//             userId: sessionObj.user_cred_id,
-//         })
-//     }
+
+    const [sessionData, setSessionData] = useState({});
+
+    const fetchSessionData = () => {
+        const storedSessionData = localStorage.getItem('login_session');
+
+        if (storedSessionData) {
+            const sessionObj = JSON.parse(storedSessionData);
+
+            setSessionData({
+                isLoggedIn: sessionObj.isLoggedIn,
+                userId: sessionObj.userId,
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchSessionData();
+    }, [localStorage.getItem('login_session')]);
 
     const navigate = useNavigate();
 
@@ -43,21 +50,22 @@ const Navbar = () => {
 
     //Handler when logging out
     const handleLogout = () => {
-        //localStorage.removeItem('myapp_session');
-        localStorage.clear();
-        toast.success("You have successfully logged out",{
+        localStorage.removeItem('login_session');
+        setSessionData({})
+        //localStorage.clear();
+        toast.success("You have successfully logged out", {
             position: 'bottom-right',
             autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
-          });
+        });
         navigate('/');
 
     }
 
     return (
         <>
-        
+
             <nav className="navbar navbar-expand-lg navbar-dark accent-color wrapper">
                 <img src={Logo} alt="" className="logo" />
                 <Link className="navbar-brand" to="/">Home</Link>
@@ -67,8 +75,8 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
-                            {/* {sessionData.userId && sessionData.isLoggedIn &&
-                                <Link className="nav-link" to="/profile">Profile <span className="sr-only">(current)</span></Link>} */}
+                            {sessionData.userId && sessionData.isLoggedIn &&
+                                <Link className="nav-link" to={`/profile/${sessionData.userId}`}>Profile <span className="sr-only">(current)</span></Link>}
                         </li>
                         <li className="nav-item dropdown">
                             <div>
@@ -83,20 +91,20 @@ const Navbar = () => {
                         </li>
                     </ul>
 
-                    {/* {sessionData.userId && sessionData.isLoggedIn ? (
+                    {sessionData.userId && sessionData.isLoggedIn ? (
                         <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button>
                     ) : (
                         <>
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleLoginWindow}>Login</button>
                             <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleRegWindow}>Sign Up</button>
                         </>
-                    )} */}
-                    <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleLoginWindow}>Login</button>
+                    )}
+                    {/* <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleToggleLoginWindow}>Login</button> */}
                     <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button>
                 </div>
             </nav>
             <RegisterMenu show={showRegWindow} onHide={handleToggleRegWindow} />
-            <LoginMenu show={showLoginWindow} onHide={handleToggleLoginWindow} />
+            <LoginMenu show={showLoginWindow} onHide={handleToggleLoginWindow} setSessionData={setSessionData} />
 
         </>
 
