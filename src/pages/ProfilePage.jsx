@@ -12,6 +12,7 @@ const ProfilePage = () => {
     const [category, setCategory] = useState([])
 
     const [sessionData, setSessionData] = useState({});
+    const [serviceData, setServiceData] = useState({});
 
     const fetchSessionData = () => {
         const storedSessionData = localStorage.getItem('login_session');
@@ -37,7 +38,7 @@ const ProfilePage = () => {
     const fetchData = async () => {
     
 
-        const [userData, contactData, loginData, serviceData, categoryData] = await Promise.all([
+        const [userData, contactData, loginData, spData, categoryData] = await Promise.all([
             //axios.get('/users/'+userId),
             //axios.get('/contacts/'+id),
             //axios.get('/login'+id),
@@ -49,7 +50,7 @@ const ProfilePage = () => {
         //setCategory(...categoryData);
         
         //console.log(userData.data.data)
-        setUserProfile(userData.data.data)
+        setServiceData(userData.data.data)
         //console.log(userProfile)
     };
 
@@ -57,7 +58,8 @@ const ProfilePage = () => {
 
     useEffect(() => {
         fetchData()
-    }, [userId])
+        //console.log(userId)
+    }, [userId,serviceData])
 
 
     return (
@@ -69,7 +71,7 @@ const ProfilePage = () => {
                         <Sidebar contact={userProfile[1]}/>
                     </div>
                     <div className="col-8">
-                        <Services userId={userId} sessionData={sessionData} servicesData={userProfile}/>
+                        <Services userId={userId} sessionData={sessionData} servicesData={serviceData} setServicesData={setServiceData}/>
                     </div>
 
                 </div>

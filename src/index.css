@@ -110,6 +110,7 @@ apply to background or text color when needed */
 }
 .card-link:hover .card-container {
   box-shadow: 0 0 8px 2px rgba(0,0,0,0.3) !important;
+  cursor: pointer;
   transition-duration: 0.3s;
 }
 
