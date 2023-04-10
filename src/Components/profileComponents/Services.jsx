@@ -1,14 +1,11 @@
 
 import { Card, Button, Image } from "react-bootstrap"
 import { FaCogs } from "react-icons/fa";
-import { useState, useContext, useEffect } from "react"
+import { useState,useEffect } from "react"
 import Service from "./Service";
 import ServiceRegistration from "./ServiceRegistration";
-import { AuthContext } from "../../AuthContext";
-import axios from "axios";
 
-const Services = () => {
-    const { userId, setUserId } = useContext(AuthContext);
+const Services = ({userId, sessionData, servicesData}) => {
     const [spData, setSpData] = useState([]);
     const [storageChanged, setStorageChanged] = useState(false);
 
@@ -23,68 +20,6 @@ const Services = () => {
         setServices(updatedServices);
       }
     
-
-//     // Load data from local storage when the component mounts
-//     useEffect(() => {
-//         const storedData = localStorage.getItem('postServiceData')
-//         if (storedData) {
-//             setSpData(JSON.parse(storedData))
-//         }
-//         return () => {
-//             // Cleanup function to remove any resources
-//           };
-//     }, [])
-
-//     // Save data to local storage whenever it changes
-//     useEffect(() => {
-//         localStorage.setItem('postServiceData', JSON.stringify(spData));
-//     }, [spData]);
-
-//     // Load data from local storage whenever it changes
-//   useEffect(() => {
-//     if (storageChanged) {
-//       const storedData = localStorage.getItem("postServiceData");
-//       if (storedData) {
-//         setSpData(JSON.parse(storedData));
-//       }
-//       setStorageChanged(false);
-//     }
-//   }, [storageChanged]);
-
-// return (
-//     <>
-//         {userId && spData.length === 0 &&
-//             <Card className="card-container shadow-sm p-5 align-items-center">
-//                 <FaCogs size={300} />
-//                 <Card.Text>
-//                     Seems like you have not yet provides any services yet!
-//                 </Card.Text>
-//                 <Button onClick={handleToggleServiceWindow}>Add a Service</Button>
-//             </Card>}
-
-//         <div className="row">
-
-//             {userId && spData.length > 0 &&
-//                 <div className="col-md-4 col-sm-6">
-//                     <Card className="shadow-sm card-container align-items-center ">
-//                         <Card.Body className="d-flex flex-column align-items-center justify-content-center">
-//                             <Card.Text>You have more service to provide?
-//                             </Card.Text>
-//                             <Button variant="primary" onClick={handleToggleServiceWindow}>+ Add a Service</Button>
-//                         </Card.Body>
-//                     </Card>
-
-//                 </div>}
-//             {spData.map((service, index) => (
-//                 <div key={index} className="col-md-4 col-sm-6">
-//                     <Service data={service} /></div>
-//             ))}
-
-//         </div>
-//         <ServiceRegistration show={showServiceWindow} onHide={handleToggleServiceWindow} />
-//     </>
-
-// )
 
 const [services, setServices] = useState([
     {
@@ -125,11 +60,11 @@ const [services, setServices] = useState([
 ])
 
 
-const [displayServices, setDisplayServices] = useState(services.reverse())  
+//const [displayServices, setDisplayServices] = useState(services.reverse())  
 
 return (
     <>
-        {userId && services.length == 0 &&
+        {sessionData.isLoggedIn && sessionData.userId === userId && servicesData.length == 0 &&
             <Card className="card-container shadow-sm p-5 align-items-center">
                 <FaCogs size={300} />
                 <Card.Text>
@@ -139,7 +74,7 @@ return (
             </Card>}
 
         <div className="row">
-            {userId && services.length > 0 &&
+            {sessionData.isLoggedIn && sessionData.userId === userId && servicesData.length > 0 &&
                 <div className="col-md-4 col-sm-6">
                     <Card className="shadow-sm card-container align-items-center ">
                         <Card.Body className="d-flex flex-column align-items-center justify-content-center">
@@ -150,7 +85,7 @@ return (
                     </Card>
 
                 </div>}
-            {displayServices.map((service, index) => (
+            {servicesData.map((service, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
                     <Service props={service} /></div>
             ))}
