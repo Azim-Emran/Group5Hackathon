@@ -1,68 +1,74 @@
-import { Card, Button, Image } from "react-bootstrap";
-import { useState, useEffect } from "react";
-// import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Endpoints from "../../API/Endpoints";
+import { Button, Card } from "react-bootstrap";
 
 const ExploreServices = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [services, setServices] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const fetchServices = async () => {
-    let sql;
+  const fetchData = async () => {
+    let endpoint = `https://us-central1-upnxt-fc294.cloudfunctions.net/api/sp/category/${selectedCategory}`;
 
-    if (selectedCategory === "All") {
-      sql = "SELECT * FROM service_post";
-    } else {
-      sql = `SELECT * FROM service_post WHERE service_category = '${selectedCategory}'`;
+    if (selectedCategory === null || selectedCategory === "All") {
+      endpoint = `https://us-central1-upnxt-fc294.cloudfunctions.net/api/sp`;
     }
 
-    const response = await fetch(
-      `https://us-central1-upnxt-fc294.cloudfunctions.net/api/sp?query=${sql}`
-    );
+    const response = await fetch(endpoint);
+
     const data = await response.json();
-    console.log(data); // check value of data
+    console.log(data);
 
     setServices(data.data);
   };
 
   useEffect(() => {
-    fetchServices();
+    fetchData();
   }, [selectedCategory]);
+
+  const handleCategoryClick = (category) => {
+    if (category === "All") {
+      setSelectedCategory(null);
+    }
+    setSelectedCategory(category);
+  };
 
   return (
     <>
       <div class="wrapper">
-        {/* <div>
-          <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("All")}
+        <div>
+          <button
+            class="btn btn-outline-dark mr-3"
+            onClick={() => handleCategoryClick("All")}
           >
             All
-          </Button>
-          <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("graphicdesign")}
+          </button>
+          <button
+            class="btn btn-outline-dark mr-3"
+            onClick={() => handleCategoryClick("Graphic Design")}
           >
             Graphic Design
-          </Button>
-          <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("photovideo")}
+          </button>
+          <button
+            class="btn btn-outline-dark mr-3"
+            onClick={() => handleCategoryClick("Photography & Videography")}
           >
             Photography & Videography
-          </Button>
-          <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("writetrans")}
+          </button>
+          <button
+            class="btn btn-outline-dark mr-3"
+            onClick={() => handleCategoryClick("Writing & Translation")}
           >
             Writing & Translation
-          </Button>
-          <Button
-            class="btn btn-outline-primary mr-3"
-            onClick={() => setSelectedCategory("programtech")}
+          </button>
+          <button
+            class="btn btn-outline-dark mr-3"
+            onClick={() => handleCategoryClick("Programming & Tech")}
           >
             Programming & Tech
-          </Button>
-        </div> */}
+          </button>
+        </div>
 
         <div className="row">
           {services.map((service) => (
