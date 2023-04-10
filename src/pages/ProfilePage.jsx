@@ -7,66 +7,62 @@ import axios from "axios";
 
 const ProfilePage = () => {
 
-    const { id } = useParams();
+    const { userId } = useParams();
     const [userProfile, setUserProfile] = useState([])
     const [category, setCategory] = useState([])
 
+    const [sessionData, setSessionData] = useState({});
+
+    const fetchSessionData = () => {
+        const storedSessionData = localStorage.getItem('login_session');
+
+        if (storedSessionData) {
+            const sessionObj = JSON.parse(storedSessionData);
+
+            setSessionData({
+                isLoggedIn: sessionObj.isLoggedIn,
+                userId: sessionObj.userId,
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchSessionData();
+    }, [localStorage.getItem('login_session')]);
+
 
     const fetchData = async () => {
-
-        // try{
-        //     const resFromUser = await axios.get("")
-        //     const resFromContact = await axios.get("")
-        //     const resFromLogin = await axios.get("")
-        //     const resFromService = await axios.get("")
-        //     const resFromCategory = await axios.get("")
-
-        //     const dataUser = resFromUser.data;
-        //     const dataContact = resFromContact.data;
-        //     const dataLogin = resFromLogin.data;
-        //     const dataService = resFromService.data;
-        //     const dataCategory = resFromCategory.data;
-
-
-        //     setUserProfile([...dataUser, ...dataContact, ...dataLogin, ...dataService])
-        //     setCategory(dataCategory)
-
-        // }catch(e){
-        //     console.log(e)
-        // }
+    
 
         const [userData, contactData, loginData, serviceData, categoryData] = await Promise.all([
-            //axios.get('/users/'+id),
-            axios.get('/contacts/'+id),
-            axios.get('/login'+id),
-            axios.get('/services'),
-            axios.get('/category')
+            axios.get('/users/'+userId),
+            //axios.get('/contacts/'+id),
+            //axios.get('/login'+id),
+            axios.get('/sp?user_cred_id='+userId),
+            //axios.get('/category')
         ]);
 
         setUserProfile([...userData.data, ...contactData.data, ...loginData.data, ...serviceData.data]);
         setCategory(...categoryData);
     };
-    // axios.get("")
-    // .then((response)=>setUserProfile(response.data.data))
-    // .catch((error)=>(console.log(error)))
 
 
 
     useEffect(() => {
         fetchData()
-    }, [id])
+    }, [userId])
 
 
     return (
         <>
             <div className="wrapper pt-4">
-                <Name user={userProfile[0]} login={userProfile[2]} />
+                <Name user={userProfile[0]} login={userProfile[2]} sessionData = {sessionData}/>
                 <div className="row mt-3">
                     <div className="col-4">
                         <Sidebar contact={userProfile[1]}/>
                     </div>
                     <div className="col-8">
-                        <Services user_id={id} service={userProfile[3]} category={category}/>
+                        <Services userId={userId} sessionData={sessionData} servicesData={userProfile[3]}/>
                     </div>
 
                 </div>

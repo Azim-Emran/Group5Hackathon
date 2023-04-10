@@ -2,7 +2,7 @@ import { Card, Image } from "react-bootstrap"
 import ServiceWindow from "./ServiceWindow";
 import { useState } from "react";
 
-const Service = (data) => {
+const Service = ({userId, sessionData, service}) => {
 
     const [showServiceWindow, setShowServiceWindow] = useState(false);
 
