@@ -80,7 +80,6 @@ const UserExplore = () => {
                 />
                 <Card.Body>
                   <Card.Title>{freelancer.user_name}</Card.Title>
-                  <Card.Text>{freelancer.user_details_id}</Card.Text>
                   <Card.Text>{freelancer.user_description}</Card.Text>
                   <Card.Text>{freelancer.user_category}</Card.Text>
                   <Button className="btn-1" variant="secondary" key={freelancer.user_details_id}><Link className="link-1" to="../../pages/SingleUserPage">View More</Link></Button>

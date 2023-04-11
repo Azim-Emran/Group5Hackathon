@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const ServiceRegistration = ({ show, onHide, data, userId }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -64,12 +65,19 @@ const ServiceRegistration = ({ show, onHide, data, userId }) => {
         event.preventDefault();
         const errors = validate(formData);
 
-        console.log(formData.cat)
-        console.log(formData.photo)
+        // console.log(formData.cat)
+        // console.log(formData.photo)
         if (Object.keys(errors).length === 0) {
             setFormData({ ...formData, photo: "" })
             //insert formData to spData 
             insertData()
+            toast   .success("You have successfully added a new service!",{
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+            })
         } else {
             setErrors(errors);
         }
