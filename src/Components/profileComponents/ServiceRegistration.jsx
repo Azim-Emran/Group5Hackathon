@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import axios from "axios";
-import Endpoints from "../../API/Endpoints";
+import Endpoints from "../../api/Endpoints";
 import { toast } from "react-toastify";
 
 
