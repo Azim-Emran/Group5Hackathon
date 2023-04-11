@@ -1,30 +1,24 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import axios from "axios";
 import Endpoints from "../../API/Endpoints";
+import { toast } from "react-toastify";
 
-const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
+
+const ServiceRegistration = ({ show, onHide, data, userId }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [errors,setErrors] = useState([])
+    
+    const [firstRender, setFirstRender] = useState(true);
     //For dropdown
 
-    const [spData, setSpData] = useState([]);
-    const [services, setServices] = useState([])
-
-    useEffect(() => {
-        const storedData = localStorage.getItem('postServiceData')
-        if (storedData) {
-            setSpData(JSON.parse(storedData))
-        }
-        console.log(storedData)
-        console.log(spData)
-
-
-    }, [])
+    //const [spData, setSpData] = useState([]);
 
     // Save data to local storage whenever it changes
-    useEffect(() => {
-        localStorage.setItem('postServiceData', JSON.stringify(spData));
-    }, [spData]);
+    // useEffect(() => {
+    //     localStorage.setItem('postServiceData', JSON.stringify(spData));
+    // }, [spData]);
 
     const categoryList = [
         "Graphic Design",
@@ -33,14 +27,27 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
         "Programming & Tech",
     ]
     const [formData, setFormData] = useState({
-        service_name: '',
-        service_description: '',
-        service_price: '',
-        service_category: '',
-        service_photo: '',
+        name: '',
+        desc: '',
+        price: '',
+        cat: '',
+        photo: '',
     });
+    const photoCategory = [
+        "graphic-design.jpg",
+        "photography-videography.jpg",
+        "writing-translation.jpg",
+        "programming-tech.jpg",
+    ]
 
-    const [errors, setErrors] = useState({});
+    useEffect(() => {
+        if (!firstRender) {
+            const photo = getCategoryPhoto(formData.cat);
+            setFormData({ ...formData, photo: photo, credid: userId });
+        } else {
+            setFirstRender(false);
+        }
+    }, [userId, data, formData.cat, firstRender]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -49,64 +56,70 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
-        setFormData({ ...formData, service_category: event.target.value });
+        setFormData({ ...formData, cat: event.target.value });
     };
+
+    const getCategoryPhoto = (category) => {
+        const categoryIndex = categoryList.indexOf(category);
+        return photoCategory[categoryIndex];
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const errors = validate(formData);
-        switch (formData.service_category) {
-            case categoryList[0]:
-                setFormData({ ...formData, service_photo: "../images/graphic-design.jpg" })
-                break;
-            case categoryList[1]:
-                setFormData({ ...formData, service_photo: "../images/photography-videography.jpg" })
-                break;
-            case categoryList[2]:
-                setFormData({ ...formData, service_photo: "../images/writing-translation.jpg" })
-                break;
-            case categoryList[3]:
-                setFormData({ ...formData, service_photo: "../images/programming-tech.jpg" })
-                break;
-            default:
-                setFormData({ ...formData, service_photo: "" })
-        }
-        if (Object.keys(errors).length === 0) {
 
+        // console.log(formData.cat)
+        // console.log(formData.photo)
+        if (Object.keys(errors).length === 0) {
+            setFormData({ ...formData, photo: "" })
             //insert formData to spData 
             insertData()
+            toast   .success("You have successfully added a new service!",{
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+            })
         } else {
             setErrors(errors);
         }
     };
 
+    // const insertData = () => {
+
+    //     const updatedServices = [...data];
+    //     updatedServices.push(formData);
+    //     updateServices(updatedServices);
+    //     handleHide();
+
+    // }
+
     const insertData = () => {
 
-        const updatedServices = [...data];
-        updatedServices.push(formData);
-        updateServices(updatedServices);
-        handleHide();
+        setFormData({ ...formData, credid: userId })
+        axios.post('/sp', formData)
+        handleHide()
 
     }
-
     const validate = (formData) => {
         let errors = {};
 
-        if (!formData.service_name) {
+        if (!formData.name) {
             errors.serviceName = "Please enter a service name.";
         }
 
-        if (!formData.service_description) {
+        if (!formData.desc) {
             errors.serviceDescription = "Please enter a service description.";
         }
 
-        if (!formData.service_price) {
+        if (!formData.price) {
             errors.servicePrice = "Please enter a service price.";
-        } else if (!/^\d+(\.\d{1,2})?$/.test(formData.service_price)) {
+        } else if (!/^\d+(\.\d{1,2})?$/.test(formData.price)) {
             errors.servicePrice = "Please enter a valid price.";
         }
 
-        if (!formData.service_category) {
+        if (!formData.cat) {
             errors.serviceCategory = "Please select a category.";
         }
 
@@ -117,9 +130,9 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
     // Reset the form data and errors when the modal is closed
     const handleHide = () => {
         setFormData({
-            service_name: '',
-            service_description: '',
-            service_price: '',
+            name: '',
+            desc: '',
+            price: '',
         });
         setErrors({
             serviceName: '',
@@ -141,11 +154,11 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
                         {/* ======== SERVICE NAME ========== */}
-                        <Form.Group controlId="service_name" className="mb-3">
+                        <Form.Group controlId="name" className="mb-3">
                             <Form.Label>Name</Form.Label>
                             <Form.Control
-                                name="service_name"
-                                value={formData.service_name}
+                                name="name"
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 required
                                 isInvalid={!!errors.serviceName}
@@ -157,7 +170,7 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
 
                         <div className="row">
                             {/* ======== SERVICE CATEGORY ========== */}
-                            <Form.Group controlId="service_category" className="mb-3 col-6">
+                            <Form.Group controlId="cat" className="mb-3 col-6">
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange} required>
                                     <option value="" selected disabled></option>
@@ -169,14 +182,14 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
                             </Form.Group>
 
                             {/* ======== SERVICE PRICE ========== */}
-                            <Form.Group controlId="service_price" className="mb-3 col-6">
+                            <Form.Group controlId="price" className="mb-3 col-6">
                                 <Form.Label>Price</Form.Label>
                                 <InputGroup>
                                     <InputGroup.Text>$</InputGroup.Text>
                                     <Form.Control
                                         type="number"
-                                        name="service_price"
-                                        value={formData.service_price}
+                                        name="price"
+                                        value={formData.price}
                                         onChange={handleInputChange}
                                         required
                                         isInvalid={!!errors.servicePrice}
@@ -190,12 +203,12 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
                         </div>
 
                         {/* ======== SERVICE DECSRIPTION ========== */}
-                        <Form.Group controlId="service_description" className="mb-3">
+                        <Form.Group controlId="desc" className="mb-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 as="textarea" rows={3}
-                                name="service_description"
-                                value={formData.service_description}
+                                name="desc"
+                                value={formData.desc}
                                 onChange={handleInputChange}
                                 required
                                 isInvalid={!!errors.serviceDescription}
@@ -203,6 +216,7 @@ const ServiceRegistration = ({ show, onHide, data, updateServices }) => {
                             <Form.Control.Feedback type="invalid" className="mb-3">
                                 {errors.serviceDescription}
                             </Form.Control.Feedback>
+
                         </Form.Group>
 
                         <Button

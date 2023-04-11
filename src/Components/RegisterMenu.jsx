@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const RegisterMenu = ({ show, onHide }) => {
 
     const [sessionData, setSessionData] = useState({});
+    const [loginData, setLoginData] = useState([]);
 
     const fetchSessionData = () => {
         const storedSessionData = localStorage.getItem('login_session');
@@ -23,7 +24,7 @@ const RegisterMenu = ({ show, onHide }) => {
 
     useEffect(() => {
         fetchSessionData();
-    }, [localStorage.getItem('login_session')]);
+    }, [localStorage.getItem('login_session'), loginData,]);
 
     const navigate = useNavigate();
 
@@ -71,33 +72,48 @@ const RegisterMenu = ({ show, onHide }) => {
         setErrors(newErrors);
 
         if (!hasError) {
+            const takingError = true
 
             axios.post('/user', {
                 email: formData.regEmail,
                 password: formData.regPassword
-              })
-              .then(response => {
-                console.log('Response:', response.data);
-                navigate('/profile');
-                handleHide();
-              })
-              .catch(error => {
-                console.error('Error:', error);
-              });
-        // console.log("Before post",formData) 
-        //     setPostData({
-        //         email: formData.regEmail,
-        //         password: formData.regPassword
-        //     })
-        //     console.log(postData)   
-        //     try {
-        //         const response = axios.post('/user', postData);
-        //         console.log('Response:', response.data, postData);
-        //         navigate('/profile');
-        //         handleHide();
-        //     } catch (error) {
-        //         console.error('Error:', error);
-        //     }
+            })
+                .then(response => {
+                    console.log('Response:', response.data);
+                    takingError = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    takingError = true;
+                });
+
+            if(!takingError) {
+                axios.get('/user')
+                    .then(response => setLoginData(response.data.data))
+                    .catch(error => console.error('Error:', error))
+    
+                localStorage.setItem('login_session', {
+                    isLoggedIn: true,
+                    userId: loginData[loginData.length - 1].user_cred_id,
+                })
+                
+                navigate('/profile' + localStorage.getItem('login_session').userId);
+
+            }
+            // console.log("Before post",formData) 
+            //     setPostData({
+            //         email: formData.regEmail,
+            //         password: formData.regPassword
+            //     })
+            //     console.log(postData)   
+            //     try {
+            //         const response = axios.post('/user', postData);
+            //         console.log('Response:', response.data, postData);
+            //         navigate('/profile');
+            //         handleHide();
+            //     } catch (error) {
+            //         console.error('Error:', error);
+            //     }
             // if (!hasError) {
             //     setPostData({
             //         email: formData.regEmail,
