@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
+import axios from "axios";
+import Endpoints from "../../API/Endpoints";
 import { toast } from "react-toastify";
+
 
 const ServiceRegistration = ({ show, onHide, data, userId }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
