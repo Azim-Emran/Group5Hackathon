@@ -28,6 +28,31 @@ const Service = (data) => {
         "writing-translation.jpg",
         "programming-tech.jpg"
     ]
+
+    
+    const categoryColor = [
+        "bg-warning",
+        "bg-success",
+        "bg-info",
+        "bg-secondary"
+    ]
+
+    function getColor(category){
+        
+        const classToAdd = "category-container text-white "
+        switch(category){
+            case photoCategory[0]:
+                return classToAdd + "text-dark "+ categoryColor[0]
+            case photoCategory[1]:
+                return classToAdd + categoryColor[1]
+            case photoCategory[2]:
+                return classToAdd + categoryColor[2]
+            case photoCategory[3]:
+                return classToAdd + categoryColor[3]
+            default:
+                return ""
+        }
+    }
     
     function imageHolder(photoLink){
         switch (photoLink) {
@@ -54,7 +79,7 @@ const Service = (data) => {
                         <Card.Body>
                             <Card.Title>{data.data.service_name}</Card.Title>
                             <Card.Text>
-                                {data.data.service_category}
+                                <span className={getColor(data.data.service_photo)}>{data.data.service_category}</span>
                             </Card.Text>
                         </Card.Body>
                     </Card>

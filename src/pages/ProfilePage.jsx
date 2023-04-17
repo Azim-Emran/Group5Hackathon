@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
 
     useEffect(()=>{
-        console.log(userProfile)
+        //console.log(userProfile)
     },[userProfile])
     const fetchData = async () => {
     

@@ -126,6 +126,12 @@ apply to background or text color when needed */
   width:100%;
 }
 
+.category-container{
+  padding: 0 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
 
 
 /* ========== PROFILE PAGE ENDS ========= */

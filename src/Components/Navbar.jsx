@@ -103,7 +103,7 @@ const Navbar = () => {
                     {/* <button className="btn btn-outline-light my-2 my-sm-0 ml-3" onClick={handleLogout}>Logout</button> */}
                 </div>
             </nav>
-            <RegisterMenu show={showRegWindow} onHide={handleToggleRegWindow} />
+            <RegisterMenu show={showRegWindow} onHide={handleToggleRegWindow} showLoginMenu={handleToggleLoginWindow}/>
             <LoginMenu show={showLoginWindow} onHide={handleToggleLoginWindow} setSessionData={setSessionData} />
 
         </>

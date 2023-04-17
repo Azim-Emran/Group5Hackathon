@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Endpoints from "../../API/Endpoints";
+import Endpoints from "../../api/Endpoints";
 import { Card, Button, Image } from "react-bootstrap";
-import { useState, useEffect } from "react";
 import Image1 from "../../images/graphic-design.jpg"
 import Image2 from "../../images/photography-videography.jpg"
 import Image3 from "../../images/writing-translation.jpg"
