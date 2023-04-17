@@ -161,6 +161,7 @@ const ServiceRegistration = ({ show, onHide, data, userId }) => {
                                 onChange={handleInputChange}
                                 required
                                 isInvalid={!!errors.serviceName}
+                                autoComplete="off"
                             />
                             <Form.Control.Feedback type="invalid" className="mb-3">
                                 {errors.serviceName}
@@ -172,7 +173,7 @@ const ServiceRegistration = ({ show, onHide, data, userId }) => {
                             <Form.Group controlId="cat" className="mb-3 col-6">
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange} required>
-                                    <option value="" selected disabled></option>
+                                    <option value="" selected disabled>Choose a category</option>
                                     <option value={categoryList[0]}>Graphic Design</option>
                                     <option value={categoryList[1]}>Photography & Videography</option>
                                     <option value={categoryList[2]}>Writing & Translation</option>

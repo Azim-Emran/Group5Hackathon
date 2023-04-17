@@ -2,12 +2,16 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+//import { hashPwd } from './processes/Hash';
 
 
-const RegisterMenu = ({ show, onHide }) => {
+const RegisterMenu = ({ show, onHide, showLoginMenu }) => {
 
     const [sessionData, setSessionData] = useState({});
     const [loginData, setLoginData] = useState([]);
+    const [firstRender, setFirstRender] = useState(true);
+    const [loginDetails, setLoginDetails] = useState([]);
 
     const fetchSessionData = () => {
         const storedSessionData = localStorage.getItem('login_session');
@@ -26,7 +30,33 @@ const RegisterMenu = ({ show, onHide }) => {
         fetchSessionData();
     }, [localStorage.getItem('login_session'), loginData,]);
 
-    const navigate = useNavigate();
+    // useEffect(() => {
+    //     // if (!firstRender) {
+    //         fetchLoginData();
+    //         if(loginDetails){
+    //             if(!sessionData.isLoggedIn || !sessionData){
+    //                 setSessionData({
+    //                     isLoggedIn: true,
+    //                     userId: loginDetails.userId
+    //                 })
+    //                 localStorage.setItem('userId', sessionData)
+    //             }
+    //         }
+    //     // } else {
+    //     //     setFirstRender(false);
+    //     // }
+    // },[loginData,sessionData,loginDetails])
+
+    // const fetchLoginData = () => {
+    //     axios.get('/user')
+    //       .then((response) => (
+    //         //setLoginDetails(response.data.data)
+    //         console.log(response.data.data)
+    //       ))
+    //       .catch((error) => console.log(error))
+    // } 
+
+    // const navigate = useNavigate();
 
     // Email and password for registration
     const [formData, setFormData] = useState({
@@ -72,34 +102,33 @@ const RegisterMenu = ({ show, onHide }) => {
         setErrors(newErrors);
 
         if (!hasError) {
-            const takingError = true
 
+            // const hashedPassword = hashPwd(formData.regPassword)
+            // console.log(hashedPassword)
             axios.post('/user', {
                 email: formData.regEmail,
                 password: formData.regPassword
             })
                 .then(response => {
                     console.log('Response:', response.data);
-                    takingError = false;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    takingError = true;
                 });
-
-            if(!takingError) {
-                axios.get('/user')
-                    .then(response => setLoginData(response.data.data))
-                    .catch(error => console.error('Error:', error))
-    
-                localStorage.setItem('login_session', {
-                    isLoggedIn: true,
-                    userId: loginData[loginData.length - 1].user_cred_id,
-                })
                 
-                navigate('/profile' + localStorage.getItem('login_session').userId);
-
-            }
+                
+            toast.success("You have successfully registered! Please login to continue!",{
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+              })
+              showLoginMenu()
+              handleHide()
+            //   if(loginDetails.userId){
+            //     navigate('/profile'+loginDetails.userId)
+            //   }
             // console.log("Before post",formData) 
             //     setPostData({
             //         email: formData.regEmail,

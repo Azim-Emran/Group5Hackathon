@@ -20,7 +20,7 @@ const LoginMenu = ({ show, onHide, setSessionData }) => {
 
   useEffect(() => {
     fetchData()
-  }, [  ])
+  }, [loginDetails])
 
   //Function to take login details from the database
   const fetchData = () => {
@@ -161,6 +161,7 @@ const LoginMenu = ({ show, onHide, setSessionData }) => {
               value={formData.loginEmail}
               onChange={handleInputChange}
               required
+              autoComplete="off"
             />
           </Form.Group>
           <Form.Group controlId="loginPassword">
